@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>こんだて帳</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;background:#F7F5F0;color:#2C2A25;min-height:100vh}
+.app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+
+/* Header */
+.header{background:#fff;border-bottom:1px solid #E8E5DF;padding:14px 16px 12px;position:sticky;top:0;z-index:20}
+.header-row{display:flex;align-items:center;justify-content:space-between}
+.app-title{font-size:19px;font-weight:700;color:#2C2A25;letter-spacing:-0.3px}
+.app-title span{color:#E07B54}
+.header-date{font-size:12px;color:#888;margin-top:2px}
+
+/* Nav */
+.nav{display:flex;background:#fff;border-top:1px solid #E8E5DF;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:20}
+.nav-btn{flex:1;padding:10px 4px 12px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:#BBBBBB;font-size:10px;transition:color 0.15s}
+.nav-btn.active{color:#E07B54}
+.nav-icon{font-size:22px;line-height:1}
+
+/* Content */
+.content{flex:1;padding:14px 14px 90px;overflow-y:auto}
+
+/* Cards */
+.card{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;border:1px solid #EDEAE4}
+.card-sm{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px;border:1px solid #EDEAE4}
+
+/* Section labels */
+.sec-label{font-size:11px;font-weight:600;color:#AAAAAA;letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px}
+.sec-label:first-child{margin-top:0}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;gap:3px}
+.badge-orange{background:#FEF0EA;color:#C85E36}
+.badge-green{background:#EAF5EE;color:#2D8A4E}
+.badge-amber{background:#FEF5E7;color:#B5740A}
+.badge-red{background:#FEECEC;color:#C0392B}
+.badge-blue{background:#EAF2FE;color:#2060CC}
+.badge-gray{background:#F2F0EB;color:#666}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:9px 16px;border-radius:10px;border:1.5px solid #DDD;background:#fff;cursor:pointer;font-size:13px;font-weight:600;color:#2C2A25;transition:all 0.15s;font-family:inherit}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:#E07B54;color:#fff;border-color:#E07B54}
+.btn-primary:active{background:#C85E36}
+.btn-sm{padding:6px 11px;font-size:12px;border-radius:8px}
+.btn-full{width:100%;justify-content:center}
+.btn-ghost{border-color:transparent;background:transparent;color:#888}
+
+/* Meal slots */
+.meal-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #F2F0EB}
+.meal-row:last-child{border-bottom:none;padding-bottom:0}
+.meal-row:first-child{padding-top:0}
+.meal-label{font-size:11px;font-weight:600;color:#AAAAAA;min-width:24px}
+.meal-name{flex:1;font-size:14px;color:#2C2A25;line-height:1.4}
+.meal-empty{flex:1;font-size:13px;color:#CCC}
+.heart-btn{background:none;border:none;cursor:pointer;font-size:20px;line-height:1;padding:2px;transition:transform 0.15s}
+.heart-btn:active{transform:scale(1.4)}
+
+/* Stock rows */
+.stock-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F2F0EB}
+.stock-row:last-child{border-bottom:none;padding-bottom:0}
+.stock-row:first-child{padding-top:0}
+.stock-name{flex:1;font-size:14px}
+.stock-amount{font-size:13px;color:#888;text-align:right;min-width:54px}
+.expiry-tag{font-size:10px;font-weight:600;padding:2px 6px;border-radius:99px;margin-left:4px}
+.expiry-warn{background:#FEF0EA;color:#C85E36}
+.expiry-ok{background:#F2F0EB;color:#888}
+
+/* Shopping */
+.check-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #F2F0EB}
+.check-row:last-child{border-bottom:none;padding-bottom:0}
+.check-row:first-child{padding-top:0}
+.check-box{width:22px;height:22px;border:2px solid #DDD;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.check-box.checked{background:#E07B54;border-color:#E07B54}
+.check-text{flex:1;font-size:14px}
+.check-text.done{color:#CCC;text-decoration:line-through}
+
+/* Budget bar */
+.budget-wrap{margin:10px 0 4px}
+.budget-track{background:#F2F0EB;border-radius:99px;height:7px;overflow:hidden}
+.budget-fill{height:100%;border-radius:99px;background:#E07B54;transition:width 0.4s}
+.budget-fill.warn{background:#E8A020}
+.budget-fill.over{background:#C0392B}
+.budget-nums{display:flex;justify-content:space-between;font-size:11px;color:#AAAAAA;margin-top:4px}
+
+/* Week calendar */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px}
+.wk-day{text-align:center;font-size:11px;color:#AAA;padding:4px 2px;font-weight:600}
+.wk-date{text-align:center;font-size:14px;padding:7px 2px;border-radius:8px;cursor:pointer;position:relative;color:#2C2A25}
+.wk-date.today{background:#E07B54;color:#fff;font-weight:700}
+.wk-date.has-dot::after{content:'';display:block;width:4px;height:4px;border-radius:50%;background:#E07B54;margin:2px auto 0}
+.wk-date.today.has-dot::after{background:#fff}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:6px 14px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid #DDD;background:#fff;color:#888;white-space:nowrap;transition:all 0.15s;font-family:inherit}
+.tab.active{background:#FEF0EA;color:#E07B54;border-color:#E07B54}
+
+/* Upload area */
+.upload-area{border:2px dashed #DDD;border-radius:12px;padding:22px;text-align:center;color:#AAA;cursor:pointer;margin-bottom:10px;transition:border-color 0.15s}
+.upload-area:active{border-color:#E07B54}
+.upload-icon{font-size:30px;margin-bottom:6px}
+.upload-text{font-size:13px;line-height:1.5}
+
+/* AI suggestion banner */
+.ai-banner{display:flex;align-items:center;gap:7px;background:#FEF0EA;border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:12px;color:#C85E36;font-weight:600}
+
+/* Warn banner */
+.warn-banner{background:#FEF5E7;border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid #F5DFA0}
+.warn-banner-title{font-size:13px;font-weight:700;color:#B5740A;margin-bottom:5px}
+.warn-item{font-size:13px;color:#B5740A}
+
+/* Favorites */
+.fav-card{background:#fff;border-radius:14px;padding:13px 15px;margin-bottom:8px;border:1px solid #EDEAE4;display:flex;align-items:center;gap:12px}
+.fav-rank{font-size:20px;min-width:28px;text-align:center}
+.fav-info{flex:1}
+.fav-name{font-size:15px;font-weight:600}
+.fav-count{font-size:12px;color:#AAA;margin-top:2px}
+
+/* Input */
+.input-label{font-size:13px;color:#888;margin-bottom:5px;display:block}
+.input-field{width:100%;padding:10px 13px;border:1.5px solid #E0DDD8;border-radius:10px;font-size:14px;background:#fff;color:#2C2A25;font-family:inherit;outline:none}
+.input-field:focus{border-color:#E07B54}
+.input-group{margin-bottom:12px}
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.modal-backdrop.open{opacity:1;pointer-events:all}
+.modal-sheet{background:#F7F5F0;border-radius:22px 22px 0 0;padding:0 0 40px;width:100%;max-width:430px;max-height:85vh;overflow-y:auto;transform:translateY(30px);transition:transform 0.25s}
+.modal-backdrop.open .modal-sheet{transform:translateY(0)}
+.modal-handle{width:38px;height:4px;border-radius:99px;background:#DDD;margin:14px auto 16px}
+.modal-inner{padding:0 16px}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:16px;color:#2C2A25}
+
+/* Select */
+.select-field{padding:8px 12px;border:1.5px solid #E0DDD8;border-radius:8px;font-size:13px;background:#fff;color:#2C2A25;font-family:inherit}
+
+/* Divider */
+.divider{height:1px;background:#F2F0EB;margin:4px 0}
+
+/* Person chips */
+.ng-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.ng-chip{font-size:11px;padding:3px 9px;border-radius:99px;background:#F2F0EB;color:#666;display:flex;align-items:center;gap:3px}
+
+/* Store selector */
+.store-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.store-btn{padding:6px 13px;border-radius:8px;font-size:12px;font-weight:600;border:1.5px solid #DDD;background:#fff;color:#888;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.store-btn.active{background:#FEF0EA;color:#E07B54;border-color:#E07B54}
+
+/* Toast */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#2C2A25;color:#fff;font-size:13px;font-weight:600;padding:10px 18px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.2s;white-space:nowrap}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-row">
+      <div>
+        <div class="app-title">🍽️ こん<span>だて</span>帳</div>
+        <div class="header-date" id="header-date"></div>
+      </div>
+      <button class="btn btn-sm" onclick="openModal('settings')">⚙️ 設定</button>
+    </div>
+  </div>
+
+  <div class="content" id="content"></div>
+
+  <nav class="nav">
+    <button class="nav-btn active" id="nav-today" onclick="switchPage('today')">
+      <div class="nav-icon">🍳</div>今日
+    </button>
+    <button class="nav-btn" id="nav-week" onclick="switchPage('week')">
+      <div class="nav-icon">📅</div>週間
+    </button>
+    <button class="nav-btn" id="nav-stock" onclick="switchPage('stock')">
+      <div class="nav-icon">📦</div>在庫
+    </button>
+    <button class="nav-btn" id="nav-shopping" onclick="switchPage('shopping')">
+      <div class="nav-icon">🛒</div>買い物
+    </button>
+    <button class="nav-btn" id="nav-fav" onclick="switchPage('fav')">
+      <div class="nav-icon">❤️</div>お気に入り
+    </button>
+  </nav>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal()">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-inner" id="modal-inner"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DAYS = ['日','月','火','水','木','金','土'];
+const today = new Date();
+const todayDow = today.getDay();
+
+// ---- State ----
+const S = {
+  page: 'today',
+  budget: { goal: 10000, spent: 0 },
+  meals: {
+    朝: { name: null, liked: false, persons: 4, recipe: null },
+    昼: { name: null, liked: false, persons: 4, recipe: null },
+    夜: { name: null, liked: false, persons: 4, recipe: null },
+  },
+  week: { 0:{}, 1:{}, 2:{}, 3:{}, 4:{}, 5:{}, 6:{} },
+  stock: { 食材:[], 調味料:[], 日用品:[] },
+  shopping: {},
+  fav:[],
+  family:[
+    {name:'お父さん', avatar:'父', ng:['パクチー']},
+    {name:'お母さん', avatar:'母', ng:['納豆']},
+    {name:'小6（長男）', avatar:'6', ng:['ピーマン']},
+    {name:'小2（次男）', avatar:'2', ng:['しいたけ','にんじん']},
+  ],
+  stockTab: '食材',
+  chirashiLoaded: false,
+};
+
+// ---- Header date ----
+(function(){
+  const d = today;
+  document.getElementById('header-date').textContent =
+    `${d.getMonth()+1}月${d.getDate()}日（${DAYS[d.getDay()]}）`;
+})();
+
+// ---- Routing ----
+function switchPage(p) {
+  S.page = p;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('nav-' + p).classList.add('active');
+  render();
+}
+
+// ---- Render dispatcher ----
+function render() {
+  const c = document.getElementById('content');
+  const fns = {today:rToday, week:rWeek, stock:rStock, shopping:rShopping, fav:rFav};
+  c.innerHTML = fns[S.page]();
+}
+
+// ---- Today ----
+function rToday() {
+  const pct = Math.min(100, Math.round(S.budget.spent / S.budget.goal * 100));
+  const barCls = pct >= 100 ? 'over' : pct >= 80 ? 'warn' : '';
+  const expiring = S.stock.食材.filter(i => i.warn);
+
+  let h = `<div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <span style="font-size:13px;font-weight:600;color:#888">今週の予算</span>
+      <span class="badge badge-orange">週¥${S.budget.goal.toLocaleString()}目標</span>
+    </div>
+    <div class="budget-track"><div class="budget-fill ${barCls}" style="width:${pct}%"></div></div>
+    <div class="budget-nums"><span>使用 ¥${S.budget.spent.toLocaleString()}</span><span>残り ¥${(S.budget.goal-S.budget.spent).toLocaleString()}</span></div>
+  </div>`;
+
+  if (expiring.length) {
+    h += `<div class="warn-banner"><div class="warn-banner-title">⚠️ 期限が近い食材を活用して提案</div>`;
+    expiring.forEach(i => { h += `<div class="warn-item">・${i.name}（${i.expiry || '残り少'}）</div>`; });
+    h += `</div>`;
+  }
+
+  h += `<div class="sec-label">チラシを読み込む</div>`;
+  if (S.chirashiLoaded) {
+    h += `<div class="card" style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="font-size:20px">🗞️</span>
+      <div style="flex:1"><div style="font-size:14px;font-weight:600">万代のチラシ読み込み済み</div><div style="font-size:12px;color:#AAA">特売：豚バラ、豆腐、ほうれん草</div></div>
+      <button class="btn btn-sm btn-ghost" onclick="S.chirashiLoaded=false;render()">✕</button>
+    </div>`;
+  } else {
+    h += `<div class="upload-area" onclick="loadChirashi()">
+      <div class="upload-icon">📷</div>
+      <div class="upload-text">スーパーのチラシスクショを<br>タップして追加（最大2店舗）</div>
+    </div>`;
+  }
+
+  h += `<div class="sec-label">今日のメニュー</div>
+  <div class="ai-banner">✨ AI提案：在庫・チラシ・栄養バランスを考慮</div>
+  <div class="card">`;
+
+  ['朝','昼','夜'].forEach(t => {
+    const m = S.meals[t];
+    if (m.name) {
+      h += `<div class="meal-row" style="flex-wrap:wrap;gap:6px">
+        <span class="meal-label">${t}</span>
+        <span class="meal-name">${m.name}</span>
+        <div style="display:flex;gap:4px;align-items:center">
+          ${m.recipe ? `<button class="btn btn-sm" style="font-size:11px;padding:4px 8px" onclick="openModal('recipe','${t}')">📖 レシピ</button>` : ''}
+          <button class="heart-btn" onclick="toggleLike('${t}')">${m.liked ? '❤️' : '🤍'}</button>
+        </div>
+      </div>`;
+    } else {
+      h += `<div class="meal-row">
+        <span class="meal-label">${t}</span>
+        <span class="meal-empty">未定</span>
+        <button class="btn btn-sm" onclick="openModal('suggest','${t}')">提案する</button>
+      </div>`;
+    }
+  });
+
+  h += `</div>
+  <button class="btn btn-primary btn-full" style="margin-top:4px" onclick="openModal('suggest','all')">
+    ✨ 全食まとめて提案してもらう
+  </button>`;
+  return h;
+}
+
+// ---- Week ----
+function rWeek() {
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - todayDow);
+
+  let h = `<div class="week-grid">`;
+  DAYS.forEach(d => { h += `<div class="wk-day">${d}</div>`; });
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    const isToday = i === todayDow;
+    const hasDot = Object.keys(S.week[i]||{}).length > 0;
+    h += `<div class="wk-date ${isToday?'today':''} ${hasDot?'has-dot':''}" onclick="openModal('dayedit',${i})">${d.getDate()}</div>`;
+  }
+  h += `</div>`;
+
+  for (let i = 0; i < 7; i++) {
+    const meals = S.week[i] || {};
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    const isToday = i === todayDow;
+    if (!isToday && Object.keys(meals).length === 0) continue;
+    h += `<div class="sec-label">${d.getMonth()+1}/${d.getDate()}（${DAYS[i]}）${isToday?' 今日':''}</div>
+    <div class="card">`;
+    let hasAny = false;
+    ['朝','昼','夜'].forEach(s => {
+      if (meals[s]) {
+        hasAny = true;
+        h += `<div class="meal-row"><span class="meal-label">${s}</span><span class="meal-name">${meals[s]}</span><button class="heart-btn">🤍</button></div>`;
+      }
+    });
+    if (!hasAny) h += `<div style="font-size:14px;color:#CCC;padding:4px 0">まだ決まっていません</div>`;
+    h += `<div style="padding-top:10px"><button class="btn btn-sm" onclick="openModal('dayedit',${i})">✏️ 編集する</button></div></div>`;
+  }
+  return h;
+}
+
+// ---- Stock ----
+function rStock() {
+  let h = `<div class="tabs">`;
+  ['食材','調味料','日用品'].forEach(cat => {
+    h += `<button class="tab ${S.stockTab===cat?'active':''}" onclick="S.stockTab='${cat}';render()">${cat}</button>`;
+  });
+  h += `</div><div class="card">`;
+  const items = S.stock[S.stockTab] || [];
+  if (items.length === 0) {
+    h += `<div style="text-align:center;padding:32px 20px;color:#CCC">
+      <div style="font-size:32px;margin-bottom:8px">📦</div>
+      <div style="font-size:14px">まだ登録されていません</div>
+    </div>`;
+  } else {
+    items.forEach((item, idx) => {
+      const exTag = item.expiry ? `<span class="expiry-tag ${item.warn?'expiry-warn':'expiry-ok'}">${item.expiry}</span>` : '';
+      const amtColor = item.warn ? 'color:#C85E36;font-weight:600' : '';
+      h += `<div class="stock-row">
+        <span class="stock-name">${item.name}${exTag}</span>
+        <span class="stock-amount" style="${amtColor}">${item.amount}</span>
+        <button class="btn btn-sm btn-ghost" onclick="openModal('editstock','${S.stockTab}',${idx})">✏️</button>
+      </div>`;
+    });
+  }
+  h += `</div><button class="btn btn-full" onclick="openModal('addstock')">＋ 在庫を追加</button>`;
+  return h;
+}
+
+// ---- Shopping ----
+function rShopping() {
+  let totalLeft = 0;
+  Object.values(S.shopping).forEach(arr => arr.forEach(i => { if (!i.done) totalLeft++; }));
+
+  let h = '';
+  const storeKeys = Object.keys(S.shopping);
+  if (storeKeys.length === 0) {
+    h += `<div style="text-align:center;padding:40px 20px;color:#CCC">
+      <div style="font-size:36px;margin-bottom:10px">🛒</div>
+      <div style="font-size:14px">買い物リストはまだ空です<br>献立を提案すると自動で追加されます</div>
+    </div>`;
+  } else if (totalLeft === 0) {
+    h += `<div class="card" style="background:#EAF5EE;border-color:#A8DDB8;margin-bottom:10px">
+      <div style="font-size:14px;font-weight:700;color:#2D8A4E">✅ 全部買えた！お疲れさま</div>
+    </div>`;
+  }
+
+  Object.entries(S.shopping).forEach(([store, items]) => {
+    const left = items.filter(i => !i.done).length;
+    h += `<div class="sec-label">${store} <span style="font-weight:400">${left > 0 ? `残り${left}品` : '✓ 完了'}</span></div>
+    <div class="card">`;
+    items.forEach((item, idx) => {
+      h += `<div class="check-row">
+        <div class="check-box ${item.done?'checked':''}" onclick="toggleCheck('${store}',${idx})">
+          ${item.done ? '<span style="color:#fff;font-size:15px;font-weight:700">✓</span>' : ''}
+        </div>
+        <span class="check-text ${item.done?'done':''}">${item.name}</span>
+      </div>`;
+    });
+    h += `</div>`;
+  });
+
+  h += `<button class="btn btn-full" onclick="openModal('addshop')">＋ アイテムを追加</button>`;
+  return h;
+}
+
+// ---- Favorites ----
+function rFav() {
+  const medals = ['🥇','🥈','🥉'];
+  let h = `<div class="ai-banner">✨ ❤️をつけたメニューが自動でたまっていくよ</div>`;
+  if (S.fav.length === 0) {
+    h += `<div style="text-align:center;padding:40px 20px;color:#CCC">
+      <div style="font-size:36px;margin-bottom:10px">🍽️</div>
+      <div style="font-size:14px">まだお気に入りがありません<br>今日の献立に❤️をつけてみよう！</div>
+    </div>`;
+  } else {
+    S.fav.forEach((f, i) => {
+      h += `<div class="fav-card">
+        <div class="fav-rank">${i < 3 ? medals[i] : '❤️'}</div>
+        <div class="fav-info">
+          <div class="fav-name">${f.name}</div>
+          <div class="fav-count">❤️ ${f.count}回</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-sm" onclick="openModal('favplan','${f.name}')">今週に入れる</button>
+          <button class="btn btn-sm btn-ghost" onclick="deleteFav(${i})" style="color:#C0392B;padding:6px 8px">🗑️</button>
+        </div>
+      </div>`;
+    });
+  }
+  h += `<button class="btn btn-full" style="margin-top:4px" onclick="openModal('addfav')">＋ 手動で追加する</button>`;
+  return h;
+}
+
+// ---- Delete favorite ----
+function deleteFav(idx) {
+  S.fav.splice(idx, 1);
+  showToast('🗑️ 削除しました');
+  render();
+}
+
+// ---- Toggle like ----
+function toggleLike(time) {
+  const m = S.meals[time];
+  m.liked = !m.liked;
+  if (m.liked && m.name) {
+    const ex = S.fav.find(f => f.name === m.name);
+    if (ex) ex.count++;
+    else S.fav.unshift({name: m.name, count: 1});
+    S.fav.sort((a,b) => b.count - a.count);
+    showToast('❤️ お気に入りに追加しました');
+  }
+  render();
+}
+
+// ---- Toggle check ----
+function toggleCheck(store, idx) {
+  S.shopping[store][idx].done = !S.shopping[store][idx].done;
+  render();
+}
+
+// ---- Load chirashi (demo) ----
+function loadChirashi() {
+  S.chirashiLoaded = true;
+  showToast('📷 チラシを読み込みました');
+  render();
+}
+
+// ---- Toast ----
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ---- Modal ----
+function openModal(type, a1, a2) {
+  const bd = document.getElementById('modal-backdrop');
+  const inn = document.getElementById('modal-inner');
+  bd.classList.add('open');
+
+  if (type === 'suggest') {
+    const label = a1 === 'all' ? '今日の全食' : `今日の${a1}ごはん`;
+    inn.innerHTML = `<div class="modal-title">✨ ${label}の献立を提案</div>
+      <div class="card-sm" style="margin-bottom:10px">
+        <div style="font-size:13px;color:#888;margin-bottom:6px">何人分？</div>
+        <div style="display:flex;gap:6px">
+          ${[2,3,4].map(n=>`<button class="btn btn-sm ${n===4?'btn-primary':''}">${n}人分</button>`).join('')}
+        </div>
+      </div>
+      <div class="card-sm" style="margin-bottom:14px">
+        <div style="font-size:13px;color:#888;margin-bottom:4px">考慮すること</div>
+        <div style="font-size:13px">📦 在庫の豚バラ・豆腐が期限近め<br>🗞️ 万代の特売：豚バラ、ほうれん草<br>💚 栄養バランス・和洋中バランス</div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="demoSuggest('${a1}')">
+        ✨ AIに提案してもらう
+      </button>`;
+  } else if (type === 'settings') {
+    let h = `<div class="modal-title">⚙️ 設定</div>
+      <div class="sec-label" style="margin-top:0">家族構成・苦手食材</div>
+      <div class="card" style="margin-bottom:12px">`;
+    S.family.forEach(m => {
+      h += `<div class="stock-row">
+        <div style="width:36px;height:36px;border-radius:50%;background:#FEF0EA;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#E07B54;flex-shrink:0">${m.avatar}</div>
+        <div style="flex:1;margin-left:10px">
+          <div style="font-size:14px;font-weight:600">${m.name}</div>
+          <div class="ng-list">${m.ng.map(n=>`<span class="ng-chip">🙅 ${n}</span>`).join('')}</div>
+        </div>
+        <button class="btn btn-sm btn-ghost">✏️</button>
+      </div>`;
+    });
+    h += `</div>
+      <div class="sec-label">週の予算</div>
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:14px">目標額</span>
+          <span style="font-size:16px;font-weight:700;color:#E07B54">¥${S.budget.goal.toLocaleString()}</span>
+        </div>
+      </div>
+      <button class="btn btn-full" onclick="closeModal()">閉じる</button>`;
+    inn.innerHTML = h;
+  } else if (type === 'addstock') {
+    inn.innerHTML = `<div class="modal-title">📦 在庫を追加</div>
+      <div class="input-group"><label class="input-label">食材・品名</label><input class="input-field" placeholder="例：豚バラ、シャンプー"></div>
+      <div class="input-group"><label class="input-label">量</label><input class="input-field" placeholder="例：300g、2個、1本"></div>
+      <div class="input-group"><label class="input-label">消費期限（任意）</label><input class="input-field" type="date"></div>
+      <div class="input-group"><label class="input-label">カテゴリ</label>
+        <div class="store-row" id="cat-row">
+          <button class="store-btn active" onclick="selectBtn('cat-row',this)">食材</button>
+          <button class="store-btn" onclick="selectBtn('cat-row',this)">調味料</button>
+          <button class="store-btn" onclick="selectBtn('cat-row',this)">日用品</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="showToast('✅ 在庫を追加しました');closeModal()">追加する</button>`;
+  } else if (type === 'editstock') {
+    const item = S.stock[a1][a2];
+    inn.innerHTML = `<div class="modal-title">✏️ 在庫を編集</div>
+      <div class="input-group"><label class="input-label">食材名</label><input class="input-field" value="${item.name}"></div>
+      <div class="input-group"><label class="input-label">量</label><input class="input-field" value="${item.amount}"></div>
+      ${item.expiry ? `<div class="input-group"><label class="input-label">消費期限</label><input class="input-field" value="${item.expiry}"></div>` : ''}
+      <button class="btn btn-primary btn-full" style="margin-bottom:8px" onclick="showToast('✅ 更新しました');closeModal()">保存する</button>
+      <button class="btn btn-full" style="color:#C0392B;border-color:#FBDADA" onclick="showToast('🗑️ 削除しました');closeModal()">この在庫を削除</button>`;
+  } else if (type === 'addshop') {
+    inn.innerHTML = `<div class="modal-title">🛒 買い物リストに追加</div>
+      <div class="input-group"><label class="input-label">品名</label><input class="input-field" placeholder="例：牛乳 1L、たまご"></div>
+      <div class="input-group"><label class="input-label">お店</label>
+        <div class="store-row" id="shop-row">
+          <button class="store-btn active" onclick="selectBtn('shop-row',this)">万代</button>
+          <button class="store-btn" onclick="selectBtn('shop-row',this)">業務スーパー</button>
+          <button class="store-btn" onclick="selectBtn('shop-row',this)">マツモト</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="showToast('✅ 追加しました');closeModal()">追加する</button>`;
+  } else if (type === 'recipe') {
+    const m = S.meals[a1];
+    const r = m.recipe;
+    if (!r) { closeModal(); return; }
+    inn.innerHTML = `<div class="modal-title">📖 ${m.name}</div>
+      <div class="sec-label" style="margin-top:0">材料（${m.persons}人分）</div>
+      <div class="card" style="margin-bottom:12px">
+        ${r.ingredients.map(ing => `<div class="stock-row"><span class="stock-name">${ing.name}</span><span class="stock-amount">${ing.amount}</span></div>`).join('')}
+      </div>
+      <div class="sec-label">作り方</div>
+      <div class="card" style="margin-bottom:14px">
+        ${r.steps.map((s,i) => `<div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #F2F0EB;${i===r.steps.length-1?'border-bottom:none':''}"
+          ><div style="min-width:22px;height:22px;border-radius:50%;background:#FEF0EA;color:#E07B54;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div
+          ><div style="font-size:13px;line-height:1.6;color:#2C2A25">${s}</div></div>`).join('')}
+      </div>
+      ${r.memo ? `<div class="warn-banner"><div class="warn-banner-title" style="color:#B5740A">💡 ポイント</div><div style="font-size:13px;color:#666">${r.memo}</div></div>` : ''}
+      <button class="btn btn-full" onclick="closeModal()">閉じる</button>`;
+  } else if (type === 'addfav') {
+    inn.innerHTML = `<div class="modal-title">❤️ お気に入りを追加</div>
+      <div class="input-group"><label class="input-label">メニュー名</label><input class="input-field" id="fav-input" placeholder="例：肉じゃが、唐揚げ"></div>
+      <button class="btn btn-primary btn-full" onclick="addFavManual()">追加する</button>`;
+  } else if (type === 'favplan') {
+    inn.innerHTML = `<div class="modal-title">❤️「${a1}」を今週の献立に</div>
+      <div class="card-sm" style="margin-bottom:12px">
+        <div style="font-size:13px;color:#888;margin-bottom:8px">何日の何食に入れる？</div>
+        ${[0,1,2,3,4,5,6].map(i => {
+          const d = new Date(today); d.setDate(today.getDate()-todayDow+i);
+          return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:13px;min-width:60px">${d.getMonth()+1}/${d.getDate()}（${DAYS[i]}）</span>
+            <div style="display:flex;gap:4px">
+              ${['朝','昼','夜'].map(t=>`<button class="btn btn-sm" style="padding:4px 8px;font-size:11px">${t}</button>`).join('')}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="btn btn-primary btn-full" onclick="showToast('📅 献立に追加しました！');closeModal()">追加する</button>`;
+  } else if (type === 'dayedit') {
+    const dow = Number(a1);
+    const d = new Date(today); d.setDate(today.getDate()-todayDow+dow);
+    const meals = S.week[dow] || {};
+    inn.innerHTML = `<div class="modal-title">${d.getMonth()+1}/${d.getDate()}（${DAYS[dow]}）の献立</div>
+      ${['朝','昼','夜'].map(s => `
+        <div class="input-group">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+            <label class="input-label" style="margin:0">${s}ごはん</label>
+            <select class="select-field">
+              <option>4人</option><option>3人</option><option>2人</option><option>なし</option>
+            </select>
+          </div>
+          <input class="input-field" placeholder="${s}ごはんのメニュー" value="${meals[s]||''}">
+        </div>`).join('')}
+      <button class="btn btn-primary btn-full" style="margin-bottom:8px" onclick="showToast('✅ 保存しました');closeModal()">保存する</button>
+      <button class="btn btn-full" onclick="openModal('suggest','all')">✨ AIに提案してもらう</button>`;
+  }
+}
+
+function demoSuggest(slot) {
+  closeModal();
+  const recipes = {
+    朝: {
+      name: '卵かけご飯・わかめ味噌汁・ミニサラダ',
+      recipe: {
+        ingredients: [
+          {name:'ご飯', amount:'茶碗2杯'},{name:'卵', amount:'2個'},
+          {name:'醤油', amount:'少々'},{name:'わかめ（乾燥）', amount:'大さじ1'},
+          {name:'豆腐', amount:'½丁'},{name:'味噌', amount:'大さじ1.5'},
+        ],
+        steps: [
+          'わかめを水で戻し、豆腐を一口大に切る。',
+          '鍋に出汁（200ml）を沸かし、豆腐を加えて1分煮る。',
+          '火を止めてから味噌を溶き入れ、わかめを加える。',
+          '茶碗にご飯を盛り、卵を割り入れ、醤油を少々かける。',
+          'お好みでミニサラダを添えて完成。',
+        ],
+        memo: '卵はできるだけ新鮮なものを。醤油はかけすぎ注意！',
+      }
+    },
+    昼: {
+      name: '豆腐と野菜の中華炒め・ご飯',
+      recipe: {
+        ingredients: [
+          {name:'豆腐', amount:'1丁'},{name:'玉ねぎ', amount:'½個'},
+          {name:'キャベツ', amount:'2〜3枚'},{name:'ごま油', amount:'大さじ1'},
+          {name:'醤油', amount:'大さじ1'},{name:'オイスターソース', amount:'大さじ1'},
+          {name:'片栗粉', amount:'小さじ1'},{name:'ご飯', amount:'茶碗2杯'},
+        ],
+        steps: [
+          '豆腐はキッチンペーパーで水気を拭き、2cm角に切る。',
+          '玉ねぎは薄切り、キャベツはざく切りにする。',
+          'フライパンにごま油を熱し、豆腐を焼き色がつくまで焼く。',
+          '野菜を加えて炒め、しんなりしたら醤油・オイスターソースで味付け。',
+          '水溶き片栗粉でとろみをつけて完成。ご飯に盛りつける。',
+        ],
+        memo: '豆腐はしっかり焼くと崩れにくくなります。',
+      }
+    },
+    夜: {
+      name: '豚バラと玉ねぎの生姜炒め・ほうれん草のお浸し・味噌汁・ご飯',
+      recipe: {
+        ingredients: [
+          {name:'豚バラ薄切り', amount:'200g'},{name:'玉ねぎ', amount:'1個'},
+          {name:'しょうが', amount:'1かけ'},{name:'醤油', amount:'大さじ2'},
+          {name:'みりん', amount:'大さじ2'},{name:'酒', amount:'大さじ1'},
+          {name:'ほうれん草', amount:'1束'},{name:'めんつゆ', amount:'大さじ1'},
+          {name:'ご飯', amount:'茶碗4杯'},
+        ],
+        steps: [
+          '玉ねぎは薄切り、しょうがはすりおろす。',
+          '醤油・みりん・酒・しょうがを混ぜてタレを作る。',
+          'フライパンで豚バラを炒め、色が変わったら玉ねぎを加える。',
+          '玉ねぎがしんなりしたらタレを加え、全体に絡める。',
+          'ほうれん草は塩茹でして絞り、めんつゆで和える。',
+          '味噌汁は好みの具で作り、ご飯と一緒に盛りつける。',
+        ],
+        memo: 'タレはあらかじめ混ぜておくとスムーズ。甘めが好きならみりんを少し増やして。',
+      }
+    },
+  };
+
+  if (slot !== 'all' && recipes[slot]) {
+    S.meals[slot].name = recipes[slot].name;
+    S.meals[slot].recipe = recipes[slot].recipe;
+    showToast('✨ 献立を提案しました！');
+    render();
+  } else {
+    ['朝','昼','夜'].forEach(t => {
+      S.meals[t].name = recipes[t].name;
+      S.meals[t].recipe = recipes[t].recipe;
+    });
+    showToast('✨ 3食の献立を提案しました！');
+    render();
+  }
+}
+
+function addFavManual() {
+  const val = document.getElementById('fav-input').value.trim();
+  if (!val) return;
+  const ex = S.fav.find(f => f.name === val);
+  if (ex) { ex.count++; } else { S.fav.push({name: val, count: 1}); }
+  S.fav.sort((a,b) => b.count - a.count);
+  showToast('❤️ お気に入りに追加しました');
+  closeModal();
+  render();
+}
+
+function selectBtn(rowId, el) {
+  document.querySelectorAll('#'+rowId+' .store-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+}
+
+// Initial render
+render();
+</script>
+</body>
+</html>
