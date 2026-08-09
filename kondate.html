@@ -450,6 +450,7 @@ function rFav() {
 function deleteFav(idx) {
   S.fav.splice(idx, 1);
   showToast('🗑️ 削除しました');
+  saveData();
   render();
 }
 
@@ -464,12 +465,14 @@ function toggleLike(time) {
     S.fav.sort((a,b) => b.count - a.count);
     showToast('❤️ お気に入りに追加しました');
   }
+  saveData();
   render();
 }
 
 // ---- Toggle check ----
 function toggleCheck(store, idx) {
   S.shopping[store][idx].done = !S.shopping[store][idx].done;
+  saveData();
   render();
 }
 
@@ -536,9 +539,9 @@ function openModal(type, a1, a2) {
     inn.innerHTML = h;
   } else if (type === 'addstock') {
     inn.innerHTML = `<div class="modal-title">📦 在庫を追加</div>
-      <div class="input-group"><label class="input-label">食材・品名</label><input class="input-field" placeholder="例：豚バラ、シャンプー"></div>
-      <div class="input-group"><label class="input-label">量</label><input class="input-field" placeholder="例：300g、2個、1本"></div>
-      <div class="input-group"><label class="input-label">消費期限（任意）</label><input class="input-field" type="date"></div>
+      <div class="input-group"><label class="input-label">食材・品名</label><input id="stock-name-input" class="input-field" placeholder="例：豚バラ、シャンプー"></div>
+      <div class="input-group"><label class="input-label">量</label><input id="stock-amt-input" class="input-field" placeholder="例：300g、2個、1本"></div>
+      <div class="input-group"><label class="input-label">消費期限（任意）</label><input id="stock-date-input" class="input-field" type="date"></div>
       <div class="input-group"><label class="input-label">カテゴリ</label>
         <div class="store-row" id="cat-row">
           <button class="store-btn active" onclick="selectBtn('cat-row',this)">食材</button>
@@ -546,7 +549,7 @@ function openModal(type, a1, a2) {
           <button class="store-btn" onclick="selectBtn('cat-row',this)">日用品</button>
         </div>
       </div>
-      <button class="btn btn-primary btn-full" onclick="showToast('✅ 在庫を追加しました');closeModal()">追加する</button>`;
+      <button class="btn btn-primary btn-full" onclick="addStockAndClose()">追加する</button>`;
   } else if (type === 'editstock') {
     const item = S.stock[a1][a2];
     inn.innerHTML = `<div class="modal-title">✏️ 在庫を編集</div>
@@ -557,7 +560,7 @@ function openModal(type, a1, a2) {
       <button class="btn btn-full" style="color:#C0392B;border-color:#FBDADA" onclick="showToast('🗑️ 削除しました');closeModal()">この在庫を削除</button>`;
   } else if (type === 'addshop') {
     inn.innerHTML = `<div class="modal-title">🛒 買い物リストに追加</div>
-      <div class="input-group"><label class="input-label">品名</label><input class="input-field" placeholder="例：牛乳 1L、たまご"></div>
+      <div class="input-group"><label class="input-label">品名</label><input id="shop-name-input" class="input-field" placeholder="例：牛乳 1L、たまご"></div>
       <div class="input-group"><label class="input-label">お店</label>
         <div class="store-row" id="shop-row">
           <button class="store-btn active" onclick="selectBtn('shop-row',this)">万代</button>
@@ -565,7 +568,7 @@ function openModal(type, a1, a2) {
           <button class="store-btn" onclick="selectBtn('shop-row',this)">マツモト</button>
         </div>
       </div>
-      <button class="btn btn-primary btn-full" onclick="showToast('✅ 追加しました');closeModal()">追加する</button>`;
+      <button class="btn btn-primary btn-full" onclick="addShopAndClose()">追加する</button>`;
   } else if (type === 'recipe') {
     const m = S.meals[a1];
     const r = m.recipe;
@@ -689,6 +692,7 @@ function demoSuggest(slot) {
     S.meals[slot].name = recipes[slot].name;
     S.meals[slot].recipe = recipes[slot].recipe;
     showToast('✨ 献立を提案しました！');
+    saveData();
     render();
   } else {
     ['朝','昼','夜'].forEach(t => {
@@ -696,6 +700,7 @@ function demoSuggest(slot) {
       S.meals[t].recipe = recipes[t].recipe;
     });
     showToast('✨ 3食の献立を提案しました！');
+    saveData();
     render();
   }
 }
@@ -707,6 +712,39 @@ function addFavManual() {
   if (ex) { ex.count++; } else { S.fav.push({name: val, count: 1}); }
   S.fav.sort((a,b) => b.count - a.count);
   showToast('❤️ お気に入りに追加しました');
+  saveData();
+  closeModal();
+  render();
+}
+
+function addStockAndClose() {
+  const nameEl = document.getElementById('stock-name-input');
+  const amtEl = document.getElementById('stock-amt-input');
+  const dateEl = document.getElementById('stock-date-input');
+  const catBtn = document.querySelector('#cat-row .store-btn.active');
+  if (!nameEl || !nameEl.value.trim()) { showToast('品名を入力してね'); return; }
+  const cat = catBtn ? catBtn.textContent : '食材';
+  let expiry = null;
+  if (dateEl && dateEl.value) {
+    const parts = dateEl.value.split('-');
+    expiry = parseInt(parts[1]) + '/' + parseInt(parts[2]);
+  }
+  S.stock[cat].push({ name: nameEl.value.trim(), amount: amtEl.value.trim() || 'あり', expiry, warn: false });
+  saveData();
+  showToast('✅ 在庫を追加しました');
+  closeModal();
+  render();
+}
+
+function addShopAndClose() {
+  const nameEl = document.getElementById('shop-name-input');
+  const storeBtn = document.querySelector('#shop-row .store-btn.active');
+  if (!nameEl || !nameEl.value.trim()) { showToast('品名を入力してね'); return; }
+  const store = storeBtn ? storeBtn.textContent : '万代';
+  if (!S.shopping[store]) S.shopping[store] = [];
+  S.shopping[store].push({ name: nameEl.value.trim(), done: false });
+  saveData();
+  showToast('✅ 追加しました');
   closeModal();
   render();
 }
@@ -720,8 +758,44 @@ function closeModal() {
   document.getElementById('modal-backdrop').classList.remove('open');
 }
 
+// ---- localStorage 保存・読み込み ----
+const STORAGE_KEY = 'kondate_v1';
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      budget: S.budget,
+      meals: S.meals,
+      week: S.week,
+      stock: S.stock,
+      shopping: S.shopping,
+      fav: S.fav,
+      family: S.family,
+    }));
+  } catch(e) { console.warn('保存失敗:', e); }
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.budget) S.budget = d.budget;
+    if (d.meals) S.meals = d.meals;
+    if (d.week) S.week = d.week;
+    if (d.stock) S.stock = d.stock;
+    if (d.shopping) S.shopping = d.shopping;
+    if (d.fav) S.fav = d.fav;
+    if (d.family) S.family = d.family;
+  } catch(e) { console.warn('読み込み失敗:', e); }
+}
+
+// 起動時に読み込み
+loadData();
+
 // Initial render
 render();
 </script>
 </body>
 </html>
+<!-- localStorage patch applied -->
