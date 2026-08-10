@@ -349,7 +349,13 @@ function rToday() {
 function rWeek() {
   const startOfWeek = new Date(today);
   startOfWeek.setDate(today.getDate() - todayDow);
-  let h = `<div class="card"><div class="week-grid">`;
+  const hasWeekMeals = Object.values(S.week).some(m => Object.keys(m).length > 0);
+  let h = `
+  <button class="btn btn-primary btn-full" style="margin-bottom:8px;border-radius:18px;font-size:15px;padding:16px" onclick="openModal('weekSuggest')">
+    ✨ 1週間分まとめて提案してもらう 🩷
+  </button>
+  ${hasWeekMeals ? `<button class="btn btn-full" style="margin-bottom:12px;border-color:#F5C0C8;color:#D4607A;border-radius:18px;padding:14px;font-size:14px" onclick="openModal('weekShoppingConfirm')">🛒 今週の買い物リストを作る</button>` : ''}
+  <div class="card"><div class="week-grid">`;
   DAYS.forEach(d => { h += `<div class="wk-day">${d}</div>`; });
   for (let i = 0; i < 7; i++) {
     const d = new Date(startOfWeek);
@@ -473,7 +479,44 @@ function openModal(type, a1, a2) {
   const inn = document.getElementById('modal-inner');
   bd.classList.add('open');
 
-  if (type === 'suggest') {
+  if (type === 'weekSuggest') {
+    inn.innerHTML = `<div class="modal-title">✨ 1週間の献立を提案</div>
+      <div class="card-sm" style="margin-bottom:12px">
+        <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">基本の人数</div>
+        <div style="display:flex;gap:7px">${[2,3,4].map(n=>`<button class="btn btn-sm ${n===4?'btn-primary':''}">${n}人分</button>`).join('')}</div>
+      </div>
+      <div class="card-sm" style="margin-bottom:12px">
+        <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">提案する食事</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap" id="meal-select">
+          <button class="btn btn-sm btn-primary" data-meal="朝">朝ごはん</button>
+          <button class="btn btn-sm btn-primary" data-meal="昼">昼ごはん</button>
+          <button class="btn btn-sm btn-primary" data-meal="夜">夜ごはん</button>
+        </div>
+      </div>
+      <div class="card-sm" style="margin-bottom:16px">
+        <div style="font-size:13px;color:#C08090;margin-bottom:6px;font-weight:700">考慮すること</div>
+        <div style="font-size:13px;line-height:1.8;font-weight:600">📦 在庫状況・消費期限<br>💚 栄養バランス・和洋中バランス<br>🐷 週¥${S.budget.goal.toLocaleString()}の予算内</div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="demoWeekSuggest()">✨ AIに提案してもらう 🩷</button>`;
+
+  } else if (type === 'weekShoppingConfirm') {
+    const weekItems = {
+      '万代': ['豚バラ 400g', '鶏もも肉 600g', '卵 10個', 'キャベツ 1玉', 'ほうれん草 1束', '玉ねぎ 3個', '豆腐 2丁', '納豆 3パック'],
+      '業務スーパー': ['冷凍うどん 5食', '冷凍えだまめ', 'ちくわ 1袋'],
+    };
+    let storeHtml = '';
+    Object.entries(weekItems).forEach(([store, list]) => {
+      storeHtml += `<div style="margin-bottom:14px"><div style="font-size:13px;font-weight:800;color:#C08090;margin-bottom:8px">🏪 ${store}</div>`;
+      list.forEach(item => { storeHtml += `<div style="font-size:13px;padding:6px 0;border-bottom:1px dashed #FFE8EC;font-weight:600">・${item}</div>`; });
+      storeHtml += `</div>`;
+    });
+    inn.innerHTML = `<div class="modal-title">🛒 今週の買い物リスト</div>
+      <div class="ai-banner" style="margin-bottom:14px">✨ 1週間分の献立から自動で作成しました</div>
+      <div class="card" style="margin-bottom:16px">${storeHtml}</div>
+      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="addWeekShoppingList()">買い物リストに追加する 🌸</button>
+      <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="closeModal()">閉じる</button>`;
+
+  } else if (type === 'suggest') {
     const label = a1 === 'all' ? '今日の全食' : `今日の${a1}ごはん`;
     inn.innerHTML = `<div class="modal-title">✨ ${label}の献立を提案</div>
       <div class="card-sm" style="margin-bottom:12px">
@@ -615,6 +658,45 @@ function demoSuggest(slot) {
     showToast('✨ 3食の献立を提案しました！');
   }
   saveData(); render();
+}
+
+function demoWeekSuggest() {
+  closeModal();
+  const weekMenus = [
+    { 朝:'トースト・目玉焼き・サラダ', 昼:'うどん', 夜:'豚の生姜焼き・味噌汁・ご飯' },
+    { 朝:'ご飯・納豆・味噌汁', 昼:'チャーハン', 夜:'鶏の唐揚げ・ポテトサラダ・ご飯' },
+    { 朝:'パン・ヨーグルト', 昼:'そうめん', 夜:'肉じゃが・ご飯' },
+    { 朝:'おにぎり・味噌汁', 昼:'ラーメン', 夜:'サバの味噌煮・ほうれん草のお浸し・ご飯' },
+    { 朝:'ご飯・卵焼き・味噌汁', 昼:'焼きそば', 夜:'カレーライス' },
+    { 朝:'フレンチトースト', 昼:'カレーライス（残り）', 夜:'餃子・中華スープ・ご飯' },
+    { 朝:'ご飯・納豆・みそ汁', 昼:'冷やし中華', 夜:'豚汁・鮭の塩焼き・ご飯' },
+  ];
+  for (let i = 0; i < 7; i++) {
+    S.week[i] = weekMenus[i];
+  }
+  saveData();
+  showToast('✨ 1週間分の献立を提案しました！');
+  render();
+  setTimeout(() => openModal('weekShoppingConfirm'), 400);
+}
+
+function addWeekShoppingList() {
+  const weekItems = {
+    '万代': ['豚バラ 400g', '鶏もも肉 600g', '卵 10個', 'キャベツ 1玉', 'ほうれん草 1束', '玉ねぎ 3個', '豆腐 2丁', '納豆 3パック'],
+    '業務スーパー': ['冷凍うどん 5食', '冷凍えだまめ', 'ちくわ 1袋'],
+  };
+  Object.entries(weekItems).forEach(([store, items]) => {
+    if (!S.shopping[store]) S.shopping[store] = [];
+    items.forEach(name => {
+      if (!S.shopping[store].find(i => i.name === name)) {
+        S.shopping[store].push({ name, done: false });
+      }
+    });
+  });
+  saveData();
+  showToast('🛒 買い物リストに追加しました！');
+  closeModal();
+  switchPage('shopping');
 }
 
 function addFavManual() {
