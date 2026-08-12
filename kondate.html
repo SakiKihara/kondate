@@ -252,6 +252,7 @@ const S = {
   chirashiLoaded: false,
   weekPersons: 4,
   weekMeals: { 朝: true, 昼: true, 夜: true },
+  chirashiText: '',
 };
 
 (function(){
@@ -319,10 +320,21 @@ function rToday() {
   }
 
   h += `<div class="sec-label">🌸 チラシを読み込む</div>`;
-  if (S.chirashiLoaded) {
-    h += '<div class="card" style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">🗞️</span><div style="flex:1"><div style="font-size:14px;font-weight:800">チラシ読み込み済み</div><div style="font-size:12px;color:#C08090;margin-top:2px">特売品を考慮して献立を提案します</div></div><button class="btn btn-ghost btn-sm" onclick="S.chirashiLoaded=false;render()">✕</button></div>';
+  if (S.chirashiLoaded && S.chirashiText) {
+    h += `<div class="card" style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:20px">🗞️</span>
+        <div style="flex:1;font-size:14px;font-weight:800">チラシ情報入力済み</div>
+        <button class="btn btn-sm btn-ghost" onclick="S.chirashiLoaded=false;S.chirashiText='';saveData();render()">✕</button>
+      </div>
+      <div style="font-size:12px;color:#C08090;background:#FFF8FA;border-radius:8px;padding:8px;line-height:1.7;max-height:80px;overflow-y:auto">${S.chirashiText.replace(/\n/g,'<br>')}</div>
+      <button class="btn btn-sm" style="margin-top:8px;border-color:#F5C0C8;color:#D4607A" onclick="openModal('chirashiEdit')">✏️ 編集する</button>
+    </div>`;
   } else {
-    h += '<label for="chirashi-input" class="upload-area" style="cursor:pointer;display:block"><span class="upload-icon">📷</span><div class="upload-text">スーパーのチラシスクショを<br>タップして追加（最大2店舗）</div></label><input id="chirashi-input" type="file" accept="image/*" multiple style="display:none" onchange="loadChirashi(event)">';
+    h += `<div class="upload-area" onclick="openModal('chirashiEdit')" style="cursor:pointer">
+      <span class="upload-icon">📋</span>
+      <div class="upload-text">他のAIでチラシをテキスト化して<br>ここに貼り付けてね🌸</div>
+    </div>`;
   }
 
   h += '<div class="sec-label">🌸 今日のメニュー</div>';
@@ -497,15 +509,15 @@ function deleteFav(idx) {
   saveData(); render();
 }
 
-function loadChirashi(e) {
-  const files = e && e.target ? e.target.files : null;
-  if (files && files.length > 0) {
-    S.chirashiLoaded = true;
-    const names = Array.from(files).map(f => f.name.replace(/\.[^.]+$/, '')).join('・');
-    showToast('📷 チラシを読み込みました');
-    saveData();
-    render();
-  }
+function saveChirashiText() {
+  const input = document.getElementById('chirashi-text-input');
+  if (!input || !input.value.trim()) { showToast('チラシの内容を入力してね'); return; }
+  S.chirashiText = input.value.trim();
+  S.chirashiLoaded = true;
+  saveData();
+  showToast('🗞️ チラシ情報を保存しました！');
+  closeModal();
+  render();
 }
 
 function showToast(msg) {
@@ -520,7 +532,15 @@ function openModal(type, a1, a2) {
   const inn = document.getElementById('modal-inner');
   bd.classList.add('open');
 
-  if (type === 'weekSuggest') {
+  if (type === 'chirashiEdit') {
+    inn.innerHTML = `<div class="modal-title">🗞️ チラシ情報を入力</div>
+      <div style="font-size:12px;color:#C08090;margin-bottom:10px;line-height:1.7;font-weight:600">ChatGPTやGeminiでチラシのスクショをテキスト化して下にペーストしてね🌸<br><span style="color:#D4607A">例）マツモト：豚バラ198円、鶏もも398円...<br>業務スーパー：卵158円、牛乳138円...</span></div>
+      <div class="input-group">
+        <textarea id="chirashi-text-input" class="input-field" style="height:180px;resize:none;line-height:1.7" placeholder="チラシの内容をここに貼り付けてね">${S.chirashiText || ''}</textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveChirashiText()">保存する 🌸</button>`;
+
+  } else if (type === 'weekSuggest') {
     inn.innerHTML = `<div class="modal-title">✨ 1週間の献立を提案</div>
       <div class="card-sm" style="margin-bottom:12px">
         <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">基本の人数</div>
@@ -1119,6 +1139,8 @@ function loadData() {
     if (d.shopping) S.shopping = d.shopping;
     if (d.fav) S.fav = d.fav;
     if (d.family) S.family = d.family;
+    if (d.chirashiText) S.chirashiText = d.chirashiText;
+    if (d.weekPersons) S.weekPersons = d.weekPersons;
   } catch(e) {}
 }
 
