@@ -250,6 +250,8 @@ const S = {
   ],
   stockTab: '食材',
   chirashiLoaded: false,
+  weekPersons: 4,
+  weekMeals: { 朝: true, 昼: true, 夜: true },
 };
 
 (function(){
@@ -522,14 +524,18 @@ function openModal(type, a1, a2) {
     inn.innerHTML = `<div class="modal-title">✨ 1週間の献立を提案</div>
       <div class="card-sm" style="margin-bottom:12px">
         <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">基本の人数</div>
-        <div style="display:flex;gap:7px">${[2,3,4].map(n=>`<button class="btn btn-sm ${n===4?'btn-primary':''}">${n}人分</button>`).join('')}</div>
+        <div style="display:flex;gap:7px" id="persons-row">
+          <button class="store-btn ${S.weekPersons===2?'active':''}" onclick="selectBtn('persons-row',this);S.weekPersons=2">2人分</button>
+          <button class="store-btn ${S.weekPersons===3?'active':''}" onclick="selectBtn('persons-row',this);S.weekPersons=3">3人分</button>
+          <button class="store-btn ${S.weekPersons===4?'active':''}" onclick="selectBtn('persons-row',this);S.weekPersons=4">4人分</button>
+        </div>
       </div>
       <div class="card-sm" style="margin-bottom:12px">
         <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">提案する食事</div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap" id="meal-select">
-          <button class="btn btn-sm btn-primary" data-meal="朝">朝ごはん</button>
-          <button class="btn btn-sm btn-primary" data-meal="昼">昼ごはん</button>
-          <button class="btn btn-sm btn-primary" data-meal="夜">夜ごはん</button>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button class="store-btn ${S.weekMeals.朝?'active':''}" onclick="this.classList.toggle('active');S.weekMeals.朝=!S.weekMeals.朝">朝ごはん</button>
+          <button class="store-btn ${S.weekMeals.昼?'active':''}" onclick="this.classList.toggle('active');S.weekMeals.昼=!S.weekMeals.昼">昼ごはん</button>
+          <button class="store-btn ${S.weekMeals.夜?'active':''}" onclick="this.classList.toggle('active');S.weekMeals.夜=!S.weekMeals.夜">夜ごはん</button>
         </div>
       </div>
       <div class="card-sm" style="margin-bottom:16px">
@@ -583,11 +589,11 @@ function openModal(type, a1, a2) {
     let h = `<div class="modal-title">⚙️ 設定</div>
       <div class="sec-label" style="margin-top:0">👨‍👩‍👦‍👦 家族構成・苦手食材</div>
       <div class="card" style="margin-bottom:14px">`;
-    S.family.forEach(m => {
+    S.family.forEach((m, idx) => {
       h += `<div class="stock-row">
         <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF8FAB,#D4607A);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0">${m.avatar}</div>
         <div style="flex:1;margin-left:10px"><div style="font-size:14px;font-weight:800">${m.name}</div><div class="ng-list">${m.ng.map(n=>`<span class="ng-chip">🙅 ${n}</span>`).join('')}</div></div>
-        <button class="btn btn-sm btn-ghost">✏️</button>
+        <button class="btn btn-sm btn-ghost" onclick="openModal('editFamily',${idx})">✏️</button>
       </div>`;
     });
     h += `</div>
@@ -597,9 +603,23 @@ function openModal(type, a1, a2) {
           <span style="font-size:14px;font-weight:700">目標額</span>
           <span style="font-size:18px;font-weight:900;color:#D4607A">¥${S.budget.goal.toLocaleString()}</span>
         </div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <input id="budget-input" class="input-field" type="number" value="${S.budget.goal}" style="flex:1">
+          <button class="btn btn-sm btn-primary" onclick="saveBudget()">保存</button>
+        </div>
       </div>
       <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="closeModal()">閉じる</button>`;
     inn.innerHTML = h;
+
+  } else if (type === 'editFamily') {
+    const idx = Number(a1);
+    const m = S.family[idx];
+    inn.innerHTML = `<div class="modal-title">✏️ ${m.name}の設定</div>
+      <div class="input-group">
+        <label class="input-label">苦手食材（カンマ区切り）</label>
+        <input id="ng-input" class="input-field" placeholder="例：ピーマン、にんじん" value="${m.ng.join('、')}">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveFamily(${idx})">保存する 🌸</button>`;
 
   } else if (type === 'addstock') {
     inn.innerHTML = `<div class="modal-title">📦 在庫を追加</div>
@@ -998,6 +1018,28 @@ function addWeekShoppingList() {
   showToast('🛒 買い物リストに追加しました！');
   closeModal();
   switchPage('shopping');
+}
+
+function saveBudget() {
+  const input = document.getElementById('budget-input');
+  if (!input || !input.value) return;
+  const val = parseInt(input.value);
+  if (isNaN(val) || val < 0) { showToast('正しい金額を入力してね'); return; }
+  S.budget.goal = val;
+  saveData();
+  showToast('✅ 予算を更新しました');
+  closeModal();
+  render();
+}
+
+function saveFamily(idx) {
+  const input = document.getElementById('ng-input');
+  if (!input) return;
+  const ngList = input.value.split(/[,、，]/).map(s => s.trim()).filter(s => s.length > 0);
+  S.family[idx].ng = ngList;
+  saveData();
+  showToast('✅ 苦手食材を更新しました');
+  openModal('settings');
 }
 
 function updateTodayMeal(time) {
