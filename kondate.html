@@ -320,15 +320,14 @@ function rToday() {
   if (S.chirashiLoaded) {
     h += '<div class="card" style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">🗞️</span><div style="flex:1"><div style="font-size:14px;font-weight:800">チラシ読み込み済み</div><div style="font-size:12px;color:#C08090;margin-top:2px">特売品を考慮して献立を提案します</div></div><button class="btn btn-ghost btn-sm" onclick="S.chirashiLoaded=false;render()">✕</button></div>';
   } else {
-    h += '<label for="chirashi-input" class="upload-area" style="cursor:pointer;display:block"><span class="upload-icon">📷</span><div class="upload-text">スーパーのチラシスクショを<br>タップして追加（最大2店舗）</div></label><input id="chirashi-input" type="file" accept="image/*" multiple style="display:none" onchange="loadChirashi()">';
+    h += '<label for="chirashi-input" class="upload-area" style="cursor:pointer;display:block"><span class="upload-icon">📷</span><div class="upload-text">スーパーのチラシスクショを<br>タップして追加（最大2店舗）</div></label><input id="chirashi-input" type="file" accept="image/*" multiple style="display:none" onchange="loadChirashi(event)">';
   }
 
-  h += `<div class="sec-label">🌸 今日のメニュー</div>
-  ${!S.chirashiLoaded ? `<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:14px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:8px">
-    <span style="font-size:18px">🗞️</span>
-    <div style="flex:1;font-size:12px;font-weight:700;color:#B5740A">チラシを読み込むと予算内で特売品を活かした献立を提案できるよ！</div>
-  </div>` : ''}
-  <div class="ai-banner">💡 AI提案：在庫・チラシ・栄養バランスを考慮してご提案♪</div>
+  h += '<div class="sec-label">🌸 今日のメニュー</div>';
+  if (!S.chirashiLoaded) {
+    h += '<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:14px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">🗞️</span><div style="flex:1;font-size:12px;font-weight:700;color:#B5740A">チラシを読み込むと予算内で特売品を活かした献立を提案できるよ！</div></div>';
+  }
+  h += `<div class="ai-banner">💡 AI提案：在庫・チラシ・栄養バランスを考慮してご提案♪</div>
   <div class="card">`;
 
   const mealCfg = {
@@ -373,12 +372,12 @@ function rWeek() {
   const hasWeekMeals = Object.values(S.week).some(m => Object.keys(m).length > 0);
   let chirashiAlert = '';
   if (!S.chirashiLoaded) {
-    chirashiAlert = '<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:16px;padding:13px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">🗞️</span><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#B5740A">チラシを先に読み込もう！</div><div style="font-size:12px;color:#B5740A;margin-top:2px">今日タブからチラシを追加すると予算内で特売品を活かした献立が作れるよ🌸</div></div><button class="btn btn-sm" style="border-color:#F5DFA0;color:#B5740A;flex-shrink:0;white-space:nowrap" onclick="switchPage('today')">追加する</button></div>';
+    chirashiAlert = `<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:16px;padding:13px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">🗞️</span><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#B5740A">チラシを先に読み込もう！</div><div style="font-size:12px;color:#B5740A;margin-top:2px">今日タブからチラシを追加すると予算内で特売品を活かした献立が作れるよ🌸</div></div><button class="btn btn-sm" style="border-color:#F5DFA0;color:#B5740A;flex-shrink:0;white-space:nowrap" onclick="switchPage('today')">追加する</button></div>`;
   } else {
-    chirashiAlert = '<div style="background:#EAF5EE;border:2px solid #A8DDB8;border-radius:16px;padding:11px 16px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-size:20px">✅</span><div style="font-size:13px;font-weight:700;color:#2D8A4E">チラシ読み込み済み！特売品を考慮して提案します</div></div>';
+    chirashiAlert = `<div style="background:#EAF5EE;border:2px solid #A8DDB8;border-radius:16px;padding:11px 16px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-size:20px">✅</span><div style="font-size:13px;font-weight:700;color:#2D8A4E">チラシ読み込み済み！特売品を考慮して提案します</div></div>`;
   }
 
-  let h = chirashiAlert +
+  let h = chirashiAlert + `
   <button class="btn btn-primary btn-full" style="margin-bottom:8px;border-radius:18px;font-size:15px;padding:16px" onclick="openModal('weekSuggest')">
     ✨ 1週間分まとめて提案してもらう 🩷
   </button>
@@ -497,7 +496,7 @@ function deleteFav(idx) {
 }
 
 function loadChirashi(e) {
-  const files = e ? e.target.files : null;
+  const files = e && e.target ? e.target.files : null;
   if (files && files.length > 0) {
     S.chirashiLoaded = true;
     const names = Array.from(files).map(f => f.name.replace(/\.[^.]+$/, '')).join('・');
