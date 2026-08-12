@@ -271,7 +271,31 @@ function render() {
   c.innerHTML = fns[S.page]();
 }
 
+function syncTodayFromWeek() {
+  // 週間→今日に反映（今日が空の場合のみ）
+  const todayWeek = S.week[todayDow] || {};
+  ['朝','昼','夜'].forEach(t => {
+    if (todayWeek[t] && !S.meals[t].name) {
+      S.meals[t].name = todayWeek[t];
+      S.meals[t].recipe = RECIPES[todayWeek[t]] || null;
+    }
+  });
+}
+
+function syncWeekFromToday() {
+  // 今日→週間に反映
+  if (!S.week[todayDow]) S.week[todayDow] = {};
+  ['朝','昼','夜'].forEach(t => {
+    if (S.meals[t].name) {
+      S.week[todayDow][t] = S.meals[t].name;
+    } else {
+      delete S.week[todayDow][t];
+    }
+  });
+}
+
 function rToday() {
+  syncTodayFromWeek();
   const pct = Math.min(100, Math.round(S.budget.spent / S.budget.goal * 100));
   const barCls = pct >= 100 ? 'over' : pct >= 80 ? 'warn' : '';
   const expiring = S.stock.食材.filter(i => i.warn);
@@ -294,19 +318,16 @@ function rToday() {
 
   h += `<div class="sec-label">🌸 チラシを読み込む</div>`;
   if (S.chirashiLoaded) {
-    h += `<div class="card" style="display:flex;align-items:center;gap:10px">
-      <span style="font-size:24px">🗞️</span>
-      <div style="flex:1"><div style="font-size:14px;font-weight:800">万代のチラシ読み込み済み</div><div style="font-size:12px;color:#C08090;margin-top:2px">特売：豚バラ、豆腐、ほうれん草</div></div>
-      <button class="btn btn-ghost btn-sm" onclick="S.chirashiLoaded=false;render()">✕</button>
-    </div>`;
+    h += '<div class="card" style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">🗞️</span><div style="flex:1"><div style="font-size:14px;font-weight:800">チラシ読み込み済み</div><div style="font-size:12px;color:#C08090;margin-top:2px">特売品を考慮して献立を提案します</div></div><button class="btn btn-ghost btn-sm" onclick="S.chirashiLoaded=false;render()">✕</button></div>';
   } else {
-    h += `<div class="upload-area" onclick="loadChirashi()">
-      <span class="upload-icon">📷</span>
-      <div class="upload-text">スーパーのチラシスクショを<br>タップして追加（最大2店舗）</div>
-    </div>`;
+    h += '<label for="chirashi-input" class="upload-area" style="cursor:pointer;display:block"><span class="upload-icon">📷</span><div class="upload-text">スーパーのチラシスクショを<br>タップして追加（最大2店舗）</div></label><input id="chirashi-input" type="file" accept="image/*" multiple style="display:none" onchange="loadChirashi()">';
   }
 
   h += `<div class="sec-label">🌸 今日のメニュー</div>
+  ${!S.chirashiLoaded ? `<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:14px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+    <span style="font-size:18px">🗞️</span>
+    <div style="flex:1;font-size:12px;font-weight:700;color:#B5740A">チラシを読み込むと予算内で特売品を活かした献立を提案できるよ！</div>
+  </div>` : ''}
   <div class="ai-banner">💡 AI提案：在庫・チラシ・栄養バランスを考慮してご提案♪</div>
   <div class="card">`;
 
@@ -323,7 +344,7 @@ function rToday() {
       h += `<div class="meal-row" style="flex-wrap:wrap;gap:6px">
         <div class="meal-icon ${cfg.cls}">${cfg.icon}</div>
         <span class="meal-label">${t}</span>
-        <span class="meal-name">${m.name}</span>
+        <span class="meal-name" onclick="openModal('editTodayMeal','${t}')" style="cursor:pointer;text-decoration:underline dotted #F5C0C8">${m.name}</span>
         <div style="display:flex;gap:5px;align-items:center">
           ${m.recipe ? `<button class="btn btn-sm" onclick="openModal('recipe','${t}')">📖 レシピ</button>` : ''}
           <button class="heart-btn" onclick="toggleLike('${t}')">${m.liked ? '❤️' : '🤍'}</button>
@@ -350,7 +371,14 @@ function rWeek() {
   const startOfWeek = new Date(today);
   startOfWeek.setDate(today.getDate() - todayDow);
   const hasWeekMeals = Object.values(S.week).some(m => Object.keys(m).length > 0);
-  let h = `
+  let chirashiAlert = '';
+  if (!S.chirashiLoaded) {
+    chirashiAlert = '<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:16px;padding:13px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">🗞️</span><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#B5740A">チラシを先に読み込もう！</div><div style="font-size:12px;color:#B5740A;margin-top:2px">今日タブからチラシを追加すると予算内で特売品を活かした献立が作れるよ🌸</div></div><button class="btn btn-sm" style="border-color:#F5DFA0;color:#B5740A;flex-shrink:0;white-space:nowrap" onclick="switchPage('today')">追加する</button></div>';
+  } else {
+    chirashiAlert = '<div style="background:#EAF5EE;border:2px solid #A8DDB8;border-radius:16px;padding:11px 16px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-size:20px">✅</span><div style="font-size:13px;font-weight:700;color:#2D8A4E">チラシ読み込み済み！特売品を考慮して提案します</div></div>';
+  }
+
+  let h = chirashiAlert +
   <button class="btn btn-primary btn-full" style="margin-bottom:8px;border-radius:18px;font-size:15px;padding:16px" onclick="openModal('weekSuggest')">
     ✨ 1週間分まとめて提案してもらう 🩷
   </button>
@@ -430,8 +458,15 @@ function rFav() {
   if (S.fav.length === 0) {
     h += `<div style="text-align:center;padding:40px 20px;color:#DDB8C0"><div style="font-size:48px;margin-bottom:12px">🍽️</div><div style="font-size:14px;font-weight:700">まだお気に入りがありません<br><span style="font-weight:500;font-size:13px">今日の献立に❤️をつけてみよう！</span></div></div>`;
   } else {
+    const catLabel = {main:'🍖 メイン', side:'🥗 副菜', soup:'🍜 汁物', complete:'🍱 完結系'};
+    const catColor = {main:'#FFE4EC', side:'#E4F5EA', soup:'#E8E4F5', complete:'#FFF5E4'};
+    const catTextColor = {main:'#D4607A', side:'#2D8A4E', soup:'#6040C0', complete:'#B5740A'};
     S.fav.forEach((f, i) => {
-      h += `<div class="fav-card"><div class="fav-rank">${i < 3 ? medals[i] : '🩷'}</div><div class="fav-info"><div class="fav-name">${f.name}</div><div class="fav-count">❤️ ${f.count}回</div></div><div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="openModal('favplan','${f.name}')">今週に入れる</button><button class="btn btn-sm btn-ghost" onclick="deleteFav(${i})" style="color:#C0392B">🗑️</button></div></div>`;
+      const cat = f.category || 'main';
+      const label = catLabel[cat] || '🍖 メイン';
+      const bg = catColor[cat] || '#FFE4EC';
+      const tc = catTextColor[cat] || '#D4607A';
+      h += `<div class="fav-card"><div class="fav-rank">${i < 3 ? medals[i] : '🩷'}</div><div class="fav-info"><div class="fav-name">${f.name}</div><div style="display:flex;align-items:center;gap:6px;margin-top:3px"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${bg};color:${tc}">${label}</span><span class="fav-count" style="margin-top:0">❤️ ${f.count}回</span></div></div><div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="openModal('favplan','${f.name}')">今週に入れる</button><button class="btn btn-sm btn-ghost" onclick="deleteFav(${i})" style="color:#C0392B">🗑️</button></div></div>`;
     });
   }
   h += `<button class="btn btn-full" style="margin-top:4px;border-color:#F5C0C8;color:#D4607A" onclick="openModal('addfav')">＋ 手動で追加する 🌸</button>`;
@@ -461,10 +496,15 @@ function deleteFav(idx) {
   saveData(); render();
 }
 
-function loadChirashi() {
-  S.chirashiLoaded = true;
-  showToast('📷 チラシを読み込みました');
-  render();
+function loadChirashi(e) {
+  const files = e ? e.target.files : null;
+  if (files && files.length > 0) {
+    S.chirashiLoaded = true;
+    const names = Array.from(files).map(f => f.name.replace(/\.[^.]+$/, '')).join('・');
+    showToast('📷 チラシを読み込みました');
+    saveData();
+    render();
+  }
 }
 
 function showToast(msg) {
@@ -498,6 +538,17 @@ function openModal(type, a1, a2) {
         <div style="font-size:13px;line-height:1.8;font-weight:600">📦 在庫状況・消費期限<br>💚 栄養バランス・和洋中バランス<br>🐷 週¥${S.budget.goal.toLocaleString()}の予算内</div>
       </div>
       <button class="btn btn-primary btn-full" onclick="demoWeekSuggest()">✨ AIに提案してもらう 🩷</button>`;
+
+  } else if (type === 'editTodayMeal') {
+    const t = a1;
+    const m = S.meals[t];
+    inn.innerHTML = `<div class="modal-title">✏️ ${t}ごはんを変更</div>
+      <div class="input-group"><label class="input-label">メニュー名</label><input id="today-meal-input" class="input-field" placeholder="例：カレーライス" value="${m.name||''}"></div>
+      <div class="input-group"><label class="input-label">何人分？</label>
+        <div style="display:flex;gap:7px;margin-top:6px">${[2,3,4].map(n=>`<button class="btn btn-sm ${m.persons===n?'btn-primary':''}" onclick="selectPersons(${n},this)">${n}人分</button>`).join('')}</div>
+      </div>
+      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="updateTodayMeal('${t}')">保存する 🌸</button>
+      <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="openModal('suggest','${t}')">✨ AIに提案してもらう</button>`;
 
   } else if (type === 'weekShoppingConfirm') {
     const weekItems = {
@@ -607,7 +658,21 @@ function openModal(type, a1, a2) {
 
   } else if (type === 'addfav') {
     inn.innerHTML = `<div class="modal-title">🩷 お気に入りを追加</div>
-      <div class="input-group"><label class="input-label">メニュー名</label><input class="input-field" id="fav-input" placeholder="例：肉じゃが、唐揚げ"></div>
+      <div class="input-group"><label class="input-label">メニュー名</label><input class="input-field" id="fav-input" placeholder="例：唐揚げ、ほうれん草のお浸し"></div>
+      <div class="input-group"><label class="input-label">カテゴリ</label>
+        <div class="store-row" id="fav-cat-row" style="margin-top:8px">
+          <button class="store-btn active" onclick="selectBtn('fav-cat-row',this)">🍖 メイン</button>
+          <button class="store-btn" onclick="selectBtn('fav-cat-row',this)">🥗 副菜</button>
+          <button class="store-btn" onclick="selectBtn('fav-cat-row',this)">🍜 汁物</button>
+          <button class="store-btn" onclick="selectBtn('fav-cat-row',this)">🍱 完結系</button>
+        </div>
+        <div style="font-size:11px;color:#C08090;margin-top:8px;line-height:1.6">
+          🍖 メイン：唐揚げ・生姜焼き・焼き魚など<br>
+          🥗 副菜：お浸し・サラダ・煮物など<br>
+          🍜 汁物：味噌汁・豚汁・スープなど<br>
+          🍱 完結系：カレー・シチュー・ハッシュドビーフなど
+        </div>
+      </div>
       <button class="btn btn-primary btn-full" onclick="addFavManual()">追加する 🌸</button>`;
 
   } else if (type === 'favplan') {
@@ -657,23 +722,260 @@ function demoSuggest(slot) {
     ['朝','昼','夜'].forEach(t => { S.meals[t].name = recipes[t].name; S.meals[t].recipe = recipes[t].recipe; });
     showToast('✨ 3食の献立を提案しました！');
   }
+  syncWeekFromToday();
   saveData(); render();
+}
+
+const RECIPES = {
+  'トースト・目玉焼き・サラダ': {
+    ingredients:[{name:'食パン',amount:'2枚'},{name:'卵',amount:'2個'},{name:'バター',amount:'適量'},{name:'レタス',amount:'2枚'},{name:'ミニトマト',amount:'4個'}],
+    steps:['フライパンにバターを熱し、卵を割り入れて目玉焼きを作る。','トーストを焼く。','レタス・ミニトマトをお皿に盛りつけて完成。'],
+    memo:'目玉焼きは蓋をして蒸らすと黄身がちょうどよく仕上がります。'
+  },
+  'うどん': {
+    ingredients:[{name:'冷凍うどん',amount:'2玉'},{name:'めんつゆ',amount:'大さじ3'},{name:'水',amount:'400ml'},{name:'ねぎ',amount:'適量'},{name:'天かす',amount:'適量'}],
+    steps:['鍋に水とめんつゆを入れて沸かす。','うどんを加えてほぐしながら2〜3分煮る。','器に盛り、ねぎ・天かすをのせて完成。'],
+    memo:'お好みでわかめや卵を追加してもおいしいです。'
+  },
+  '豚の生姜焼き・味噌汁・ご飯': {
+    ingredients:[{name:'豚バラ薄切り',amount:'200g'},{name:'玉ねぎ',amount:'1個'},{name:'しょうが',amount:'1かけ'},{name:'醤油',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},{name:'ご飯',amount:'茶碗4杯'}],
+    steps:['玉ねぎは薄切り、しょうがはすりおろす。','醤油・みりん・酒・しょうがを混ぜてタレを作る。','フライパンで豚バラを炒め、玉ねぎを加える。','タレを加えて全体に絡めて完成。ご飯と一緒に盛りつける。'],
+    memo:'タレはあらかじめ混ぜておくとスムーズ！'
+  },
+  'ご飯・納豆・味噌汁': {
+    ingredients:[{name:'ご飯',amount:'茶碗4杯'},{name:'納豆',amount:'4パック'},{name:'豆腐',amount:'½丁'},{name:'わかめ',amount:'適量'},{name:'味噌',amount:'大さじ2'}],
+    steps:['鍋に出汁を沸かし、豆腐を加えて火を通す。','火を止めて味噌を溶き入れ、わかめを加える。','ご飯に納豆をのせて完成。'],
+    memo:'納豆はよく混ぜると甘みが出ておいしくなります。'
+  },
+  'チャーハン': {
+    ingredients:[{name:'ご飯',amount:'茶碗3杯'},{name:'卵',amount:'3個'},{name:'ねぎ',amount:'½本'},{name:'ハム',amount:'3枚'},{name:'醤油',amount:'大さじ1'},{name:'塩こしょう',amount:'適量'},{name:'ごま油',amount:'小さじ1'}],
+    steps:['卵を溶いておく。ねぎは小口切り、ハムは1cm角に切る。','フライパンを強火で熱し、卵を入れてすぐご飯を加えてほぐす。','ねぎ・ハムを加えて炒め、醤油・塩こしょうで味付け。','仕上げにごま油を回しかけて完成。'],
+    memo:'強火で手早く炒めるのがパラパラに仕上げるコツ！'
+  },
+  '鶏の唐揚げ・ポテトサラダ・ご飯': {
+    ingredients:[{name:'鶏もも肉',amount:'300g'},{name:'醤油',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},{name:'にんにく',amount:'1かけ'},{name:'しょうが',amount:'1かけ'},{name:'片栗粉',amount:'大さじ4'},{name:'じゃがいも',amount:'2個'},{name:'マヨネーズ',amount:'大さじ3'}],
+    steps:['鶏肉を一口大に切り、醤油・酒・にんにく・しょうがに30分漬ける。','片栗粉をまぶして170℃の油で4分揚げる。','じゃがいもを茹でてつぶし、マヨネーズで和えてポテトサラダを作る。'],
+    memo:'唐揚げは二度揚げするとさらにカリッと仕上がります！'
+  },
+  '肉じゃが・ご飯': {
+    ingredients:[{name:'牛こま肉',amount:'150g'},{name:'じゃがいも',amount:'3個'},{name:'玉ねぎ',amount:'1個'},{name:'にんじん',amount:'1本'},{name:'醤油',amount:'大さじ3'},{name:'みりん',amount:'大さじ3'},{name:'砂糖',amount:'大さじ1'},{name:'だし汁',amount:'300ml'}],
+    steps:['じゃがいも・にんじんは一口大、玉ねぎは薄切りにする。','鍋に油を熱し、牛肉・玉ねぎを炒める。','じゃがいも・にんじんを加えて炒め、だし汁と調味料を加える。','蓋をして中火で15分煮て完成。'],
+    memo:'じゃがいもは煮崩れしやすいので煮すぎ注意！'
+  },
+  'サバの味噌煮・ほうれん草のお浸し・ご飯': {
+    ingredients:[{name:'サバ',amount:'2切れ'},{name:'味噌',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},{name:'砂糖',amount:'大さじ1'},{name:'しょうが',amount:'1かけ'},{name:'ほうれん草',amount:'1束'},{name:'めんつゆ',amount:'大さじ1'}],
+    steps:['サバに熱湯をかけて臭みを取る。','鍋に水・みりん・砂糖・しょうがを入れて沸かし、サバを加える。','味噌を溶き入れて10分煮る。','ほうれん草は塩茹でして絞り、めんつゆで和える。'],
+    memo:'サバの臭み取りが大事！熱湯をしっかりかけてね。'
+  },
+  'カレーライス': {
+    ingredients:[{name:'鶏もも肉',amount:'300g'},{name:'玉ねぎ',amount:'2個'},{name:'じゃがいも',amount:'2個'},{name:'にんじん',amount:'1本'},{name:'カレールー',amount:'½箱'},{name:'水',amount:'700ml'},{name:'ご飯',amount:'茶碗4杯'}],
+    steps:['具材を一口大に切る。','鍋に油を熱し、玉ねぎをあめ色になるまで炒める。','肉・野菜を加えて炒め、水を加えて15分煮る。','火を止めてルーを溶かし、さらに5分煮て完成。'],
+    memo:'玉ねぎをしっかり炒めるほど甘くおいしいカレーになります！'
+  },
+  '餃子・中華スープ・ご飯': {
+    ingredients:[{name:'餃子（市販）',amount:'20個'},{name:'ごま油',amount:'大さじ1'},{name:'水',amount:'50ml'},{name:'卵',amount:'1個'},{name:'中華スープの素',amount:'小さじ2'},{name:'水',amount:'400ml'}],
+    steps:['フライパンにごま油を熱し、餃子を並べて焼き色をつける。','水を加えて蓋をし、5分蒸し焼きにする。','蓋を取って水分を飛ばしてパリッと仕上げる。','別鍋でスープを作り、溶き卵を加えてかき玉スープにする。'],
+    memo:'餃子は触らずじっくり焼くときれいな焼き色がつきます！'
+  },
+  '豚汁・鮭の塩焼き・ご飯': {
+    ingredients:[{name:'豚バラ',amount:'100g'},{name:'大根',amount:'¼本'},{name:'にんじん',amount:'½本'},{name:'こんにゃく',amount:'½枚'},{name:'味噌',amount:'大さじ2'},{name:'だし汁',amount:'600ml'},{name:'鮭',amount:'2切れ'}],
+    steps:['大根・にんじんをいちょう切り、こんにゃくは一口大にちぎる。','鍋に豚肉・野菜を炒め、だし汁を加えて煮る。','味噌を溶き入れて豚汁の完成。','鮭は塩を振って魚焼きグリルで7〜8分焼く。'],
+    memo:'豚汁は翌日さらにおいしくなります！多めに作ってもOK。'
+  },
+  'パン・ヨーグルト': {
+    ingredients:[{name:'食パン',amount:'2枚'},{name:'ヨーグルト',amount:'200g'},{name:'はちみつ',amount:'適量'},{name:'バナナ',amount:'1本'}],
+    steps:['パンをトーストする。','ヨーグルトを器に盛り、はちみつをかける。','バナナをスライスして添えて完成。'],
+    memo:'ヨーグルトに季節のフルーツを添えると栄養バランスアップ！'
+  },
+  'おにぎり・味噌汁': {
+    ingredients:[{name:'ご飯',amount:'茶碗3杯'},{name:'塩',amount:'適量'},{name:'のり',amount:'適量'},{name:'お好みの具',amount:'適量'},{name:'豆腐',amount:'½丁'},{name:'味噌',amount:'大さじ1.5'}],
+    steps:['ご飯を塩で味付けして、具を包んでおにぎりを握る。','のりを巻いて完成。','味噌汁は豆腐を加えて作る。'],
+    memo:'おにぎりはラップで握ると手が汚れず形もきれいに！'
+  },
+  'フレンチトースト': {
+    ingredients:[{name:'食パン',amount:'2枚'},{name:'卵',amount:'2個'},{name:'牛乳',amount:'100ml'},{name:'砂糖',amount:'大さじ1'},{name:'バター',amount:'10g'},{name:'メープルシロップ',amount:'適量'}],
+    steps:['卵・牛乳・砂糖を混ぜて卵液を作る。','パンを卵液に10分以上浸す。','バターを熱したフライパンで両面をじっくり焼く。','メープルシロップをかけて完成。'],
+    memo:'じっくり弱火で焼くとふわふわに仕上がります！'
+  },
+  '焼きそば': {
+    ingredients:[{name:'焼きそば麺',amount:'2玉'},{name:'豚バラ',amount:'100g'},{name:'キャベツ',amount:'3枚'},{name:'もやし',amount:'1袋'},{name:'ソース',amount:'大さじ3'},{name:'ごま油',amount:'小さじ1'}],
+    steps:['豚肉・野菜を炒め、麺を加えてほぐす。','ソースを加えて全体に絡める。','仕上げにごま油を回しかけて完成。'],
+    memo:'麺はほぐれにくければ少量の水を加えてOK！'
+  },
+  '豚の生姜焼き・キャベツの浅漬け・ほうれん草のお浸し・味噌汁・ご飯': {
+    ingredients:[
+      {name:'豚バラ薄切り',amount:'200g'},{name:'玉ねぎ',amount:'1個'},{name:'しょうが',amount:'1かけ'},
+      {name:'醤油',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},
+      {name:'キャベツ',amount:'¼玉'},{name:'塩',amount:'小さじ½'},
+      {name:'ほうれん草',amount:'1束'},{name:'めんつゆ',amount:'大さじ1'},{name:'ごま',amount:'適量'},
+      {name:'豆腐',amount:'½丁'},{name:'わかめ',amount:'適量'},{name:'味噌',amount:'大さじ1.5'},
+      {name:'ご飯',amount:'茶碗4杯'},
+    ],
+    steps:[
+      '【生姜焼き】玉ねぎを薄切り、しょうがをすりおろしてタレを作る。豚肉を炒め、玉ねぎを加えてタレで絡める。',
+      '【浅漬け】キャベツをざく切りにして塩もみし、10分置いて水気を絞る。',
+      '【お浸し】ほうれん草を塩茹でして絞り、めんつゆとごまで和える。',
+      '【味噌汁】だし汁を沸かし、豆腐を加えて味噌を溶き入れ、わかめを加える。',
+      'ご飯と一緒に盛りつけて完成。',
+    ],
+    memo:'生姜焼きのタレは先に混ぜておくとスムーズ。副菜は前日に作り置きもOK！'
+  },
+  '鶏の唐揚げ・ポテトサラダ・きゅうりの酢の物・すまし汁・ご飯': {
+    ingredients:[
+      {name:'鶏もも肉',amount:'300g'},{name:'醤油',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},
+      {name:'にんにく',amount:'1かけ'},{name:'しょうが',amount:'1かけ'},{name:'片栗粉',amount:'大さじ4'},
+      {name:'じゃがいも',amount:'2個'},{name:'マヨネーズ',amount:'大さじ3'},{name:'きゅうり',amount:'1本'},
+      {name:'酢',amount:'大さじ2'},{name:'砂糖',amount:'大さじ1'},{name:'塩',amount:'少々'},
+      {name:'だし汁',amount:'400ml'},{name:'塩',amount:'小さじ½'},{name:'醤油',amount:'小さじ1'},
+      {name:'ご飯',amount:'茶碗4杯'},
+    ],
+    steps:[
+      '【唐揚げ】鶏肉を一口大に切り、醤油・酒・にんにく・しょうがに30分漬ける。片栗粉をまぶして170℃で4分揚げる。',
+      '【ポテトサラダ】じゃがいもを茹でてつぶし、マヨネーズで和える。',
+      '【酢の物】きゅうりを薄切りにして塩もみし、酢・砂糖で和える。',
+      '【すまし汁】だし汁を沸かし、塩・醤油で味を調える。',
+      'ご飯と一緒に盛りつけて完成。',
+    ],
+    memo:'唐揚げは二度揚げするとカリッと仕上がります！'
+  },
+  'サバの味噌煮・ひじきの煮物・大根のなます・味噌汁・ご飯': {
+    ingredients:[
+      {name:'サバ',amount:'2切れ'},{name:'味噌',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},
+      {name:'砂糖',amount:'大さじ1'},{name:'しょうが',amount:'1かけ'},
+      {name:'ひじき（乾燥）',amount:'大さじ2'},{name:'にんじん',amount:'¼本'},{name:'油揚げ',amount:'½枚'},
+      {name:'醤油',amount:'大さじ1'},{name:'大根',amount:'¼本'},{name:'にんじん',amount:'¼本'},
+      {name:'酢',amount:'大さじ2'},{name:'砂糖',amount:'大さじ1'},
+      {name:'豆腐',amount:'½丁'},{name:'ご飯',amount:'茶碗4杯'},
+    ],
+    steps:[
+      '【サバの味噌煮】サバに熱湯をかけ、鍋で調味料と一緒に10分煮る。',
+      '【ひじきの煮物】ひじきを戻し、にんじん・油揚げと一緒に醤油・みりんで炒め煮する。',
+      '【なます】大根・にんじんを千切りにして塩もみし、酢・砂糖で和える。',
+      '【味噌汁】豆腐を加えた味噌汁を作る。',
+      'ご飯と一緒に盛りつけて完成。',
+    ],
+    memo:'なますとひじきは前日に作っておくと味が馴染んでおいしくなります！'
+  },
+  '豚のしょうが焼き・ほうれん草のごま和え・きのこのソテー・豚汁・ご飯': {
+    ingredients:[
+      {name:'豚ロース',amount:'200g'},{name:'しょうが',amount:'1かけ'},{name:'醤油',amount:'大さじ2'},
+      {name:'みりん',amount:'大さじ2'},{name:'ほうれん草',amount:'1束'},{name:'ごま',amount:'大さじ1'},
+      {name:'めんつゆ',amount:'大さじ1'},{name:'しめじ',amount:'1袋'},{name:'えのき',amount:'½袋'},
+      {name:'バター',amount:'10g'},{name:'醤油',amount:'小さじ1'},
+      {name:'豚バラ',amount:'80g'},{name:'大根',amount:'¼本'},{name:'にんじん',amount:'½本'},
+      {name:'味噌',amount:'大さじ2'},{name:'ご飯',amount:'茶碗4杯'},
+    ],
+    steps:[
+      '【しょうが焼き】豚ロースにすりおろしたしょうが・醤油・みりんのタレを絡めて焼く。',
+      '【ごま和え】ほうれん草を塩茹でして絞り、めんつゆ・ごまで和える。',
+      '【きのこソテー】しめじ・えのきをバターで炒め、醤油を加える。',
+      '【豚汁】豚バラ・大根・にんじんを炒めてだし汁で煮て、味噌を溶き入れる。',
+      'ご飯と一緒に盛りつけて完成。',
+    ],
+    memo:'豚汁は多めに作ると翌日のお昼にも使えます！'
+  },
+  '餃子・もやしのナムル・きゅうりとわかめの酢の物・中華スープ・ご飯': {
+    ingredients:[
+      {name:'餃子（市販）',amount:'20個'},{name:'ごま油',amount:'大さじ1'},
+      {name:'もやし',amount:'1袋'},{name:'にんにく',amount:'少々'},{name:'ごま油',amount:'小さじ1'},
+      {name:'醤油',amount:'小さじ1'},{name:'塩',amount:'少々'},
+      {name:'きゅうり',amount:'1本'},{name:'わかめ',amount:'適量'},{name:'酢',amount:'大さじ2'},
+      {name:'砂糖',amount:'大さじ1'},{name:'卵',amount:'1個'},{name:'中華スープの素',amount:'小さじ2'},
+      {name:'ご飯',amount:'茶碗4杯'},
+    ],
+    steps:[
+      '【餃子】フライパンにごま油を熱し、餃子を並べて水を加え蓋をして蒸し焼きにする。',
+      '【ナムル】もやしを塩茹でして、ごま油・にんにく・塩・醤油で和える。',
+      '【酢の物】きゅうりを薄切り・わかめを戻して、酢・砂糖で和える。',
+      '【中華スープ】湯を沸かしてスープの素を溶かし、溶き卵を加えてかき玉にする。',
+      'ご飯と一緒に盛りつけて完成。',
+    ],
+    memo:'餃子は触らずじっくり焼くときれいな焼き色がつきます！'
+  },
+  '鮭の塩焼き・ひじきの煮物・ほうれん草のお浸し・豚汁・ご飯': {
+    ingredients:[
+      {name:'鮭',amount:'4切れ'},{name:'塩',amount:'適量'},
+      {name:'ひじき（乾燥）',amount:'大さじ2'},{name:'にんじん',amount:'¼本'},{name:'油揚げ',amount:'½枚'},
+      {name:'醤油',amount:'大さじ1'},{name:'みりん',amount:'大さじ1'},
+      {name:'ほうれん草',amount:'1束'},{name:'めんつゆ',amount:'大さじ1'},
+      {name:'豚バラ',amount:'80g'},{name:'大根',amount:'¼本'},{name:'味噌',amount:'大さじ2'},
+      {name:'ご飯',amount:'茶碗4杯'},
+    ],
+    steps:[
+      '【鮭】塩を振って10分置き、魚焼きグリルで7〜8分焼く。',
+      '【ひじき】ひじきを戻し、にんじん・油揚げと醤油・みりんで炒め煮する。',
+      '【お浸し】ほうれん草を塩茹でして絞り、めんつゆで和える。',
+      '【豚汁】豚バラ・大根を炒めてだし汁で煮て、味噌を溶き入れる。',
+      'ご飯と一緒に盛りつけて完成。',
+    ],
+    memo:'鮭は塩を振って少し置くと余分な水分が出て、ふっくら焼けます！'
+  },
+  '冷やし中華': {
+    ingredients:[{name:'中華麺',amount:'2玉'},{name:'ハム',amount:'4枚'},{name:'きゅうり',amount:'1本'},{name:'卵',amount:'2個'},{name:'冷やし中華のたれ',amount:'適量'},{name:'ごま',amount:'適量'}],
+    steps:['麺を茹でて冷水で締める。','卵は薄焼き卵を作って千切りにする。','きゅうりとハムを千切りにする。','麺を器に盛り、具材をのせてたれをかける。'],
+    memo:'麺はしっかり冷やすとのどごしよく食べられます！'
+  },
+};
+
+function buildMenuWithFav(defaultMenu) {
+  // お気に入りのメインを週間提案に組み込む
+  const favMains = S.fav.filter(f => f.category === 'main' && f.count >= 1);
+  const favSides = S.fav.filter(f => f.category === 'side');
+  const favSoups = S.fav.filter(f => f.category === 'soup');
+  const favComplete = S.fav.filter(f => f.category === 'complete');
+
+  if (favMains.length === 0 && favComplete.length === 0) return defaultMenu;
+
+  // お気に入りを最大3日分使う
+  const result = [...defaultMenu];
+  const usedDays = [];
+  const maxFavDays = Math.min(3, favMains.length + favComplete.length);
+
+  // ランダムに何日かお気に入りで置き換え
+  for (let i = 0; i < maxFavDays; i++) {
+    let day;
+    do { day = Math.floor(Math.random() * 7); } while (usedDays.includes(day));
+    usedDays.push(day);
+
+    if (favComplete.length > 0 && Math.random() > 0.6) {
+      // 完結系（カレーなど）
+      const fav = favComplete[Math.floor(Math.random() * favComplete.length)];
+      result[day] = { ...result[day], 夜: fav.name };
+    } else if (favMains.length > 0) {
+      // メイン＋副菜＋汁物を組み合わせ
+      const main = favMains[Math.floor(Math.random() * favMains.length)];
+      const side1 = favSides.length > 0 ? favSides[Math.floor(Math.random() * favSides.length)].name : 'きゅうりの酢の物';
+      const side2 = favSides.length > 1 ? favSides.filter(s => s.name !== side1)[Math.floor(Math.random() * (favSides.length-1))].name : 'ほうれん草のお浸し';
+      const soup = favSoups.length > 0 ? favSoups[Math.floor(Math.random() * favSoups.length)].name : '味噌汁';
+      result[day] = { ...result[day], 夜: `${main.name}・${side1}・${side2}・${soup}・ご飯` };
+    }
+  }
+  return result;
 }
 
 function demoWeekSuggest() {
   closeModal();
   const weekMenus = [
-    { 朝:'トースト・目玉焼き・サラダ', 昼:'うどん', 夜:'豚の生姜焼き・味噌汁・ご飯' },
-    { 朝:'ご飯・納豆・味噌汁', 昼:'チャーハン', 夜:'鶏の唐揚げ・ポテトサラダ・ご飯' },
-    { 朝:'パン・ヨーグルト', 昼:'そうめん', 夜:'肉じゃが・ご飯' },
-    { 朝:'おにぎり・味噌汁', 昼:'ラーメン', 夜:'サバの味噌煮・ほうれん草のお浸し・ご飯' },
-    { 朝:'ご飯・卵焼き・味噌汁', 昼:'焼きそば', 夜:'カレーライス' },
-    { 朝:'フレンチトースト', 昼:'カレーライス（残り）', 夜:'餃子・中華スープ・ご飯' },
-    { 朝:'ご飯・納豆・みそ汁', 昼:'冷やし中華', 夜:'豚汁・鮭の塩焼き・ご飯' },
+    { 朝:'トースト・目玉焼き・サラダ', 昼:'うどん', 夜:'豚の生姜焼き・キャベツの浅漬け・ほうれん草のお浸し・味噌汁・ご飯' },
+    { 朝:'ご飯・納豆・味噌汁', 昼:'チャーハン', 夜:'鶏の唐揚げ・ポテトサラダ・きゅうりの酢の物・すまし汁・ご飯' },
+    { 朝:'パン・ヨーグルト', 昼:'そうめん', 夜:'サバの味噌煮・ひじきの煮物・大根のなます・味噌汁・ご飯' },
+    { 朝:'おにぎり・味噌汁', 昼:'焼きそば', 夜:'豚のしょうが焼き・きのこのソテー・トマトサラダ・豚汁・ご飯' },
+    { 朝:'ご飯・卵焼き・味噌汁', 昼:'冷やし中華', 夜:'カレーライス' },
+    { 朝:'フレンチトースト', 昼:'親子丼', 夜:'餃子・もやしのナムル・きゅうりとわかめの酢の物・中華スープ・ご飯' },
+    { 朝:'ご飯・納豆・みそ汁', 昼:'ラーメン', 夜:'鮭の塩焼き・ほうれん草のごま和え・大根の味噌汁・ご飯' },
   ];
+  const finalMenus = buildMenuWithFav(weekMenus);
   for (let i = 0; i < 7; i++) {
-    S.week[i] = weekMenus[i];
+    S.week[i] = finalMenus[i];
   }
+  // 今日の分をS.mealsにもレシピ込みで反映
+  const todayMenu = finalMenus[todayDow];
+  ['朝','昼','夜'].forEach(t => {
+    if (todayMenu[t]) {
+      S.meals[t].name = todayMenu[t];
+      S.meals[t].recipe = RECIPES[todayMenu[t]] || null;
+    }
+  });
   saveData();
   showToast('✨ 1週間分の献立を提案しました！');
   render();
@@ -699,11 +1001,27 @@ function addWeekShoppingList() {
   switchPage('shopping');
 }
 
+function updateTodayMeal(time) {
+  const input = document.getElementById('today-meal-input');
+  if (!input || !input.value.trim()) { showToast('メニュー名を入力してね'); return; }
+  S.meals[time].name = input.value.trim();
+  S.meals[time].recipe = RECIPES[input.value.trim()] || null;
+  syncWeekFromToday();
+  saveData();
+  showToast('✅ 更新しました');
+  closeModal();
+  render();
+}
+
 function addFavManual() {
   const val = document.getElementById('fav-input').value.trim();
-  if (!val) return;
+  const catBtn = document.querySelector('#fav-cat-row .store-btn.active');
+  if (!val) { showToast('メニュー名を入力してね'); return; }
+  const catLabel = catBtn ? catBtn.textContent : '🍖 メイン';
+  const cat = catLabel.includes('メイン') ? 'main' : catLabel.includes('副菜') ? 'side' : catLabel.includes('汁物') ? 'soup' : 'complete';
   const ex = S.fav.find(f => f.name === val);
-  if (ex) ex.count++; else S.fav.push({name: val, count: 1});
+  if (ex) { ex.count++; ex.category = cat; }
+  else { S.fav.push({name: val, count: 1, category: cat}); }
   S.fav.sort((a,b) => b.count - a.count);
   showToast('❤️ お気に入りに追加しました');
   saveData(); closeModal(); render();
