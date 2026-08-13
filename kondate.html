@@ -10,20 +10,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:#FFF0F3}
 
 /* ── ヘッダー ── */
-.header{background:linear-gradient(160deg,#FFD6E0 0%,#FFE8EE 60%,#FFF0F3 100%);padding:18px 16px 14px;position:sticky;top:0;z-index:20;overflow:visible}
+.header{background:linear-gradient(160deg,#FFD6E0 0%,#FFE8EE 60%,#FFF0F3 100%);padding:16px 16px 12px;position:sticky;top:0;z-index:20}
 .header-deco{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden}
 .header-deco span{position:absolute;font-size:10px;opacity:0.5}
 .header-row{display:flex;align-items:flex-start;justify-content:space-between;position:relative}
-.header-left{flex:1}
-.app-title{font-size:26px;font-weight:900;color:#D4607A;letter-spacing:0.5px}
-.header-date{font-size:12px;color:#C08090;margin-top:4px;font-weight:600;display:flex;align-items:center;gap:4px}
-.settings-btn{background:#fff;border:2px solid #F5C0C8;border-radius:14px;padding:9px 14px;font-size:12px;font-weight:800;color:#D4607A;cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 3px 10px rgba(212,96,122,0.15);white-space:nowrap;font-family:inherit}
+.app-title{font-size:24px;font-weight:900;color:#D4607A;letter-spacing:0.5px}
+.header-date{font-size:12px;color:#C08090;margin-top:4px;font-weight:600}
+.settings-btn{background:#fff;border:2px solid #F5C0C8;border-radius:14px;padding:9px 14px;font-size:12px;font-weight:800;color:#D4607A;cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 3px 10px rgba(212,96,122,0.15);font-family:inherit}
 
-/* ── ふぅちゃんキャラ ── */
-.fuu-wrap{position:relative;height:60px;margin:0 14px;z-index:5}
-.fuu-card{background:linear-gradient(135deg,#FFE8EE,#FFF0F3);border:2px solid #FFD0DA;border-radius:20px;padding:8px 14px;display:flex;align-items:center;gap:10px;position:relative;overflow:visible;box-shadow:0 4px 16px rgba(212,96,122,0.12)}
-.fuu-img{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 12px rgba(212,96,122,0.25);position:absolute;top:-28px;right:14px;z-index:10;background:#FFE4EA}
-.fuu-text{font-size:13px;font-weight:700;color:#D4607A;padding-right:86px;line-height:1.5}
+/* ── ふぅちゃん ── */
+.fuu-wrap{margin:10px 14px 0;position:relative;z-index:5}
+.fuu-card{background:linear-gradient(135deg,#FFF5F8,#FFE8EE);border:2px solid #FFD0DA;border-radius:20px;padding:12px 14px;padding-right:90px;min-height:54px;display:flex;align-items:center;box-shadow:0 4px 16px rgba(212,96,122,0.08)}
+.fuu-text{font-size:13px;font-weight:700;color:#D4607A;line-height:1.6}
+.fuu-img{width:74px;height:74px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 14px rgba(212,96,122,0.3);position:absolute;top:-14px;right:14px;z-index:10;background:#FFE4EA}
 
 /* ── ナビ ── */
 .nav{display:flex;background:#fff;border-top:2px solid #FFE0E6;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:20;padding-bottom:env(safe-area-inset-bottom)}
@@ -36,57 +35,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 
 /* ── カード ── */
 .card{background:#fff;border-radius:20px;padding:16px;margin-bottom:12px;border:2px solid #FFE0E6;box-shadow:0 4px 16px rgba(212,96,122,0.08)}
-.card-sm{background:#fff;border-radius:16px;padding:13px 15px;margin-bottom:10px;border:2px solid #FFE0E6;box-shadow:0 2px 10px rgba(212,96,122,0.06)}
+.card-sm{background:#fff;border-radius:16px;padding:13px 15px;margin-bottom:10px;border:2px solid #FFE0E6}
 
 /* ── セクションラベル ── */
 .sec-label{font-size:13px;font-weight:800;color:#C08090;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
 .sec-label:first-child{margin-top:0}
 
-/* ── バッジ ── */
-.badge-pink{display:inline-flex;align-items:center;font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;background:#FFE4EC;color:#D4607A;border:1.5px solid #F5C0C8}
-
 /* ── ボタン ── */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:10px 16px;border-radius:14px;border:2px solid #FFD0DA;background:#fff;cursor:pointer;font-size:13px;font-weight:800;color:#D4607A;transition:all 0.15s;font-family:inherit}
 .btn:active{transform:scale(0.96)}
 .btn-primary{background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;border:none;box-shadow:0 6px 18px rgba(212,96,122,0.35)}
-.btn-primary:active{transform:scale(0.97)}
 .btn-mint{background:linear-gradient(135deg,#A8E6CF,#5CC8A0);color:#fff;border:none;box-shadow:0 4px 12px rgba(92,200,160,0.3)}
 .btn-lavender{background:linear-gradient(135deg,#C8B4E8,#9B7FCC);color:#fff;border:none;box-shadow:0 4px 12px rgba(155,127,204,0.3)}
 .btn-sm{padding:7px 13px;font-size:12px;border-radius:12px}
 .btn-full{width:100%;justify-content:center;padding:16px}
 .btn-ghost{border-color:transparent;background:transparent;color:#C08090}
 
-/* ── 予算バー ── */
-.budget-track{background:#FFE8EC;border-radius:99px;height:10px;overflow:hidden;margin:12px 0 6px}
-.budget-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#FFB3C6,#D4607A);transition:width 0.5s}
-.budget-fill.warn{background:linear-gradient(90deg,#F5C842,#E8A020)}
-.budget-fill.over{background:linear-gradient(90deg,#F08080,#C0392B)}
-.budget-nums{display:flex;justify-content:space-between;font-size:12px;color:#C08090;font-weight:700}
-
-/* ── アップロード ── */
-.upload-area{border:2.5px dashed #F5C0C8;border-radius:18px;padding:26px;text-align:center;color:#E8A0B0;cursor:pointer;background:linear-gradient(135deg,#FFF8FA,#FFF0F3);transition:all 0.15s;margin-bottom:12px}
-.upload-area:active{border-color:#D4607A;background:#FFE8EE}
-.upload-icon{font-size:36px;margin-bottom:8px;display:block}
-.upload-text{font-size:13px;line-height:1.7;font-weight:600}
-
-/* ── AIバナー ── */
-.ai-banner{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#FFF0F5,#FFE4EA);border:1.5px solid #F5C8D0;border-radius:14px;padding:11px 15px;margin-bottom:12px;font-size:12px;color:#D4607A;font-weight:700}
-
 /* ── 食事スロット ── */
 .meal-row{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1.5px dashed #FFE0E6}
 .meal-row:last-child{border-bottom:none;padding-bottom:0}
 .meal-row:first-child{padding-top:0}
-.meal-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.meal-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .meal-icon-asa{background:linear-gradient(135deg,#FFF5CC,#FFE566)}
 .meal-icon-hiru{background:linear-gradient(135deg,#CCFFE8,#66DDA0)}
 .meal-icon-yoru{background:linear-gradient(135deg,#E0CCFF,#A080E8)}
 .meal-label{font-size:12px;font-weight:800;color:#C08090;min-width:20px}
-.meal-name{flex:1;font-size:13px;color:#3D2C2C;line-height:1.4;font-weight:600}
+.meal-name{flex:1;font-size:13px;color:#3D2C2C;line-height:1.4;font-weight:600;cursor:pointer;text-decoration:underline dotted #F5C0C8}
 .meal-empty{flex:1;font-size:13px;color:#DDB8C0;font-weight:500}
-.heart-btn{background:none;border:none;cursor:pointer;font-size:24px;line-height:1;padding:2px;transition:transform 0.15s}
+.heart-btn{background:none;border:none;cursor:pointer;font-size:22px;line-height:1;padding:2px;transition:transform 0.15s}
 .heart-btn:active{transform:scale(1.4)}
 
-/* ── 在庫行 ── */
+/* ── 在庫 ── */
 .stock-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1.5px dashed #FFE8EC}
 .stock-row:last-child{border-bottom:none;padding-bottom:0}
 .stock-row:first-child{padding-top:0}
@@ -96,26 +75,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .expiry-warn{background:#FFE4EC;color:#D4607A}
 .expiry-ok{background:#F2F0EB;color:#999}
 
-/* ── 買い物 ── */
-.check-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1.5px dashed #FFE8EC}
-.check-row:last-child{border-bottom:none;padding-bottom:0}
-.check-row:first-child{padding-top:0}
-.check-box{width:26px;height:26px;border:2.5px solid #F5C0C8;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;background:#fff}
+/* ── 買い物リスト ── */
+.shop-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1.5px dashed #FFE8EC}
+.shop-row:last-child{border-bottom:none;padding-bottom:0}
+.shop-row:first-child{padding-top:0}
+.check-box{width:24px;height:24px;border:2.5px solid #F5C0C8;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;background:#fff}
 .check-box.checked{background:linear-gradient(135deg,#FF8FAB,#D4607A);border-color:transparent}
 .check-text{flex:1;font-size:14px;font-weight:600}
 .check-text.done{color:#CCC;text-decoration:line-through}
 
-/* ── お気に入り ── */
-.fav-card{background:#fff;border-radius:18px;padding:14px 16px;margin-bottom:10px;border:2px solid #FFE0E6;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px rgba(212,96,122,0.08)}
-.fav-rank{font-size:24px;min-width:30px;text-align:center}
-.fav-info{flex:1}
-.fav-name{font-size:15px;font-weight:800;color:#3D2C2C}
-.fav-count{font-size:12px;color:#CBA0A8;margin-top:2px;font-weight:700}
-
-/* ── 週カレンダー ── */
-.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px}
+/* ── 週間カレンダー ── */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px}
 .wk-day{text-align:center;font-size:11px;color:#CBA0A8;padding:4px 2px;font-weight:800}
-.wk-date{text-align:center;font-size:14px;padding:8px 2px;border-radius:10px;cursor:pointer;position:relative;color:#3D2C2C;font-weight:600}
+.wk-date{text-align:center;font-size:14px;padding:8px 2px;border-radius:10px;cursor:pointer;color:#3D2C2C;font-weight:600}
 .wk-date.today{background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;font-weight:900}
 .wk-date.has-dot::after{content:'';display:block;width:5px;height:5px;border-radius:50%;background:#F09090;margin:2px auto 0}
 .wk-date.today.has-dot::after{background:rgba(255,255,255,0.8)}
@@ -126,11 +98,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .tab{padding:8px 18px;border-radius:99px;font-size:13px;font-weight:800;cursor:pointer;border:2px solid #FFD0DA;background:#fff;color:#CBA0A8;white-space:nowrap;transition:all 0.15s;font-family:inherit}
 .tab.active{background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(212,96,122,0.3)}
 
+/* ── お気に入り ── */
+.fav-card{background:#fff;border-radius:18px;padding:14px 16px;margin-bottom:10px;border:2px solid #FFE0E6;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px rgba(212,96,122,0.08)}
+.fav-rank{font-size:22px;min-width:30px;text-align:center}
+.fav-info{flex:1}
+.fav-name{font-size:15px;font-weight:800;color:#3D2C2C}
+.fav-count{font-size:12px;color:#CBA0A8;margin-top:2px;font-weight:700}
+
 /* ── 入力 ── */
 .input-label{font-size:13px;color:#C08090;margin-bottom:6px;display:block;font-weight:700}
 .input-field{width:100%;padding:12px 15px;border:2px solid #FFD0DA;border-radius:14px;font-size:14px;background:#fff;color:#3D2C2C;font-family:inherit;outline:none}
 .input-field:focus{border-color:#F07090;box-shadow:0 0 0 3px rgba(240,112,144,0.12)}
 .input-group{margin-bottom:14px}
+
+/* ── ストアボタン ── */
+.store-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.store-btn{padding:8px 16px;border-radius:12px;font-size:12px;font-weight:800;border:2px solid #FFD0DA;background:#fff;color:#CBA0A8;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.store-btn.active{background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;border-color:transparent}
 
 /* ── モーダル ── */
 .modal-backdrop{position:fixed;inset:0;background:rgba(61,44,44,0.4);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s}
@@ -148,47 +132,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .ng-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
 .ng-chip{font-size:11px;padding:4px 10px;border-radius:99px;background:#FFE8EC;color:#D4607A;font-weight:700}
 
-/* ── ストアボタン ── */
-.store-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.store-btn{padding:8px 16px;border-radius:12px;font-size:12px;font-weight:800;border:2px solid #FFD0DA;background:#fff;color:#CBA0A8;cursor:pointer;font-family:inherit;transition:all 0.15s}
-.store-btn.active{background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;border-color:transparent}
-
-/* ── トースト ── */
-.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;font-size:13px;font-weight:800;padding:12px 22px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.2s;white-space:nowrap;box-shadow:0 6px 20px rgba(212,96,122,0.4)}
-.toast.show{opacity:1}
+/* ── AI バナー ── */
+.ai-banner{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#FFF0F5,#FFE4EA);border:1.5px solid #F5C8D0;border-radius:14px;padding:11px 15px;margin-bottom:12px;font-size:12px;color:#D4607A;font-weight:700}
 
 /* ── 警告バナー ── */
 .warn-banner{background:#FFF8E8;border-radius:16px;padding:13px 15px;margin-bottom:12px;border:2px solid #F5DFA0}
 .warn-banner-title{font-size:13px;font-weight:800;color:#B5740A;margin-bottom:5px}
 .warn-item{font-size:13px;color:#B5740A;font-weight:600}
+
+/* ── 人数選択 ── */
+.persons-row{display:flex;gap:6px;margin-top:6px}
+.person-btn{flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:800;border:2px solid #FFD0DA;background:#fff;color:#CBA0A8;cursor:pointer;font-family:inherit;text-align:center;transition:all 0.15s}
+.person-btn.active{background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;border-color:transparent}
+
+/* ── トースト ── */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;font-size:13px;font-weight:800;padding:12px 22px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.2s;white-space:nowrap;box-shadow:0 6px 20px rgba(212,96,122,0.4)}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- ヘッダー -->
-  <div class="header">
+  <div class="header" style="position:relative;overflow:visible">
     <div class="header-deco">
       <span style="top:8px;left:20px">🩷</span>
       <span style="top:14px;left:80px;font-size:7px">✦</span>
       <span style="top:6px;left:140px;font-size:8px">🌸</span>
-      <span style="top:16px;left:200px;font-size:7px">⭐</span>
       <span style="top:8px;left:260px;font-size:8px">🩷</span>
-      <span style="top:4px;right:80px;font-size:7px">✦</span>
     </div>
     <div class="header-row">
-      <div class="header-left">
+      <div>
         <div class="app-title">🍴🥄 こんだて帳 🩷</div>
-        <div class="header-date" id="header-date">📅 </div>
+        <div class="header-date" id="header-date"></div>
       </div>
       <button class="settings-btn" onclick="openModal('settings')">⚙️ 設定</button>
     </div>
   </div>
 
-  <!-- ふぅちゃん -->
-  <div style="position:relative;margin:10px 14px 0;z-index:5">
-    <div class="card" style="padding:12px 14px;padding-right:90px;min-height:54px;display:flex;align-items:center;background:linear-gradient(135deg,#FFF5F8,#FFE8EE)">
-      <div style="font-size:13px;font-weight:700;color:#D4607A;line-height:1.6">ふぅちゃんと一緒に<br>今日のごはん考えよ🌸</div>
+  <div class="fuu-wrap">
+    <div class="fuu-card">
+      <div class="fuu-text" id="fuu-message">ふぅちゃんと一緒に<br>明日のごはん考えよ🌸</div>
     </div>
     <img src="https://raw.githubusercontent.com/SakiKihara/kondate/main/%E3%81%B5%E3%81%85%E3%81%A1%E3%82%83%E3%82%93.jpg"
       alt="ふぅちゃん"
@@ -199,16 +181,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 
   <nav class="nav">
     <button class="nav-btn active" id="nav-today" onclick="switchPage('today')">
-      <div class="nav-icon">🍳</div>今日
-    </button>
-    <button class="nav-btn" id="nav-week" onclick="switchPage('week')">
-      <div class="nav-icon">📅</div>週間
+      <div class="nav-icon">🍳</div>献立
     </button>
     <button class="nav-btn" id="nav-stock" onclick="switchPage('stock')">
       <div class="nav-icon">🥦</div>在庫
     </button>
-    <button class="nav-btn" id="nav-shopping" onclick="switchPage('shopping')">
-      <div class="nav-icon">🛒</div>買い物
+    <button class="nav-btn" id="nav-week" onclick="switchPage('week')">
+      <div class="nav-icon">📅</div>記録
     </button>
     <button class="nav-btn" id="nav-fav" onclick="switchPage('fav')">
       <div class="nav-icon">🩷</div>お気に入り
@@ -229,38 +208,91 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 const DAYS = ['日','月','火','水','木','金','土'];
 const today = new Date();
 const todayDow = today.getDay();
+const tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
 
+// ── メニュープール ──
+const MENU_POOL = {
+  朝: [
+    'トースト・目玉焼き・サラダ',
+    'ご飯・納豆・味噌汁',
+    'おにぎり・味噌汁',
+    'フレンチトースト・ヨーグルト',
+    'ご飯・卵焼き・味噌汁',
+    'パン・ヨーグルト・フルーツ',
+    'ご飯・鮭フレーク・味噌汁',
+  ],
+  昼_平日: [
+    'うどん','そうめん','チャーハン','焼きそば','パスタ','冷やし中華','ラーメン',
+  ],
+  昼_休日: [
+    '親子丼','牛丼','カツ丼','天丼','中華丼','唐揚げ丼',
+    'うどん','そうめん','ラーメン','パスタ',
+  ],
+  夜_和: [
+    { main:'鮭の塩焼き', sides:'ほうれん草のお浸し・ひじきの煮物・味噌汁・ご飯' },
+    { main:'サバの味噌煮', sides:'大根の煮物・きゅうりの酢の物・味噌汁・ご飯' },
+    { main:'鶏の照り焼き', sides:'ほうれん草のごま和え・大根サラダ・すまし汁・ご飯' },
+    { main:'ぶりの照り焼き', sides:'小松菜のお浸し・なめこの味噌汁・ご飯' },
+    { main:'豚の生姜焼き', sides:'キャベツの浅漬け・ほうれん草のお浸し・味噌汁・ご飯' },
+    { main:'鶏の唐揚げ', sides:'ポテトサラダ・きゅうりの酢の物・すまし汁・ご飯' },
+  ],
+  夜_洋: [
+    { main:'チキンソテー', sides:'コーンスープ・グリーンサラダ・パン' },
+    { main:'ハンバーグ', sides:'コンソメスープ・温野菜・ご飯' },
+    { main:'鶏むね肉のピカタ', sides:'ミネストローネ・ブロッコリーサラダ・パン' },
+    { main:'豚肉のトマト煮込み', sides:'コンソメスープ・グリーンサラダ・ご飯' },
+  ],
+  夜_中: [
+    { main:'麻婆豆腐', sides:'中華スープ・ご飯', complete:true },
+    { main:'餃子', sides:'もやしのナムル・きゅうりとわかめの酢の物・中華スープ・ご飯' },
+    { main:'チャプチェ', sides:'わかめスープ・ご飯', complete:true },
+    { main:'油淋鶏', sides:'中華スープ・ご飯', complete:true },
+  ],
+  夜_完結: [
+    { main:'カレーライス', sides:'', complete:true },
+    { main:'シチュー', sides:'パン', complete:true },
+    { main:'ハッシュドビーフ', sides:'パン', complete:true },
+  ],
+};
+
+// ── 状態 ──
 const S = {
   page: 'today',
-  budget: { goal: 10000, spent: 0 },
-  meals: {
-    朝: { name: null, liked: false, persons: 4, recipe: null },
-    昼: { name: null, liked: false, persons: 4, recipe: null },
-    夜: { name: null, liked: false, persons: 4, recipe: null },
+  tomorrow: {
+    朝: { name:null, persons:4, liked:false, recipe:null },
+    昼: { name:null, persons:4, liked:false, recipe:null },
+    夜: { name:null, persons:4, liked:false, recipe:null },
   },
-  week: { 0:{}, 1:{}, 2:{}, 3:{}, 4:{}, 5:{}, 6:{} },
   stock: { 食材:[], 調味料:[], 日用品:[] },
-  shopping: {},
-  fav:[],
+  shopping: [],
+  fav:[
+    {name:'酢鳥', count:1, category:'main'},
+    {name:'酢豚', count:1, category:'main'},
+    {name:'チャプチェ', count:1, category:'main'},
+    {name:'焼きナスよだれ豚', count:1, category:'main'},
+    {name:'油淋鶏', count:1, category:'main'},
+    {name:'ねぎ塩チキン', count:1, category:'main'},
+    {name:'鶏むねスティック', count:1, category:'main'},
+    {name:'大葉チーズカツ', count:1, category:'main'},
+    {name:'ポップコーンチキン', count:1, category:'main'},
+  ],
   family:[
     {name:'お父さん', avatar:'父', ng:['パクチー']},
     {name:'お母さん', avatar:'母', ng:['納豆']},
     {name:'小6（長男）', avatar:'6', ng:['ピーマン']},
     {name:'小2（次男）', avatar:'2', ng:['しいたけ','にんじん']},
   ],
+  week: {0:{},1:{},2:{},3:{},4:{},5:{},6:{}},
   stockTab: '食材',
-  chirashiLoaded: false,
-  weekPersons: 4,
-  weekMeals: { 朝: true, 昼: true, 夜: true },
-  chirashiText: '',
 };
 
+// ── 日付設定 ──
 (function(){
-  const d = today;
   document.getElementById('header-date').textContent =
-    `📅 ${d.getMonth()+1}月${d.getDate()}日（${DAYS[d.getDay()]}）`;
+    `📅 ${today.getMonth()+1}月${today.getDate()}日（${DAYS[today.getDay()]}）`;
 })();
 
+// ── ルーティング ──
 function switchPage(p) {
   S.page = p;
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -269,80 +301,26 @@ function switchPage(p) {
 }
 
 function render() {
-  const c = document.getElementById('content');
-  const fns = {today:rToday, week:rWeek, stock:rStock, shopping:rShopping, fav:rFav};
-  c.innerHTML = fns[S.page]();
+  const fns = {today:rToday, stock:rStock, week:rWeek, fav:rFav};
+  document.getElementById('content').innerHTML = fns[S.page]();
 }
 
-function syncTodayFromWeek() {
-  // 週間→今日に反映（今日が空の場合のみ）
-  const todayWeek = S.week[todayDow] || {};
-  ['朝','昼','夜'].forEach(t => {
-    if (todayWeek[t] && !S.meals[t].name) {
-      S.meals[t].name = todayWeek[t];
-      S.meals[t].recipe = RECIPES[todayWeek[t]] || null;
-    }
-  });
-}
-
-function syncWeekFromToday() {
-  // 今日→週間に反映
-  if (!S.week[todayDow]) S.week[todayDow] = {};
-  ['朝','昼','夜'].forEach(t => {
-    if (S.meals[t].name) {
-      S.week[todayDow][t] = S.meals[t].name;
-    } else {
-      delete S.week[todayDow][t];
-    }
-  });
-}
-
+// ── 献立タブ ──
 function rToday() {
-  syncTodayFromWeek();
-  const pct = Math.min(100, Math.round(S.budget.spent / S.budget.goal * 100));
-  const barCls = pct >= 100 ? 'over' : pct >= 80 ? 'warn' : '';
+  const tomorrowStr = `${tomorrow.getMonth()+1}月${tomorrow.getDate()}日（${DAYS[tomorrow.getDay()]}）`;
   const expiring = S.stock.食材.filter(i => i.warn);
+  const isWeekend = tomorrow.getDay() === 0 || tomorrow.getDay() === 6;
 
-  let h = `<div class="card">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:24px">🐷</span>
-      <span style="font-size:14px;font-weight:800;color:#C08090">今週の予算</span>
-      <span class="badge-pink" style="margin-left:auto">週¥${S.budget.goal.toLocaleString()}目標</span>
-    </div>
-    <div class="budget-track"><div class="budget-fill ${barCls}" style="width:${Math.max(pct,2)}%"></div></div>
-    <div class="budget-nums"><span>使用 ¥${S.budget.spent.toLocaleString()}</span><span>残り ¥${(S.budget.goal-S.budget.spent).toLocaleString()}</span></div>
-  </div>`;
+  let h = `<div class="sec-label">🌸 明日（${tomorrowStr}）の献立</div>`;
 
   if (expiring.length) {
-    h += `<div class="warn-banner"><div class="warn-banner-title">⚠️ 期限が近い食材を使ったメニューを提案</div>`;
-    expiring.forEach(i => { h += `<div class="warn-item">・${i.name}（${i.expiry || '残り少'}）</div>`; });
+    h += `<div class="warn-banner"><div class="warn-banner-title">⚠️ 期限が近い食材を優先して使います</div>`;
+    expiring.forEach(i => { h += `<div class="warn-item">・${i.name}（${i.expiry}）</div>`; });
     h += `</div>`;
   }
 
-  h += `<div class="sec-label">🌸 チラシを読み込む</div>`;
-  if (S.chirashiLoaded && S.chirashiText) {
-    h += `<div class="card" style="margin-bottom:10px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <span style="font-size:20px">🗞️</span>
-        <div style="flex:1;font-size:14px;font-weight:800">チラシ情報入力済み</div>
-        <button class="btn btn-sm btn-ghost" onclick="S.chirashiLoaded=false;S.chirashiText='';saveData();render()">✕</button>
-      </div>
-      <div style="font-size:12px;color:#C08090;background:#FFF8FA;border-radius:8px;padding:8px;line-height:1.7;max-height:80px;overflow-y:auto">${S.chirashiText.replace(/\n/g,'<br>')}</div>
-      <button class="btn btn-sm" style="margin-top:8px;border-color:#F5C0C8;color:#D4607A" onclick="openModal('chirashiEdit')">✏️ 編集する</button>
-    </div>`;
-  } else {
-    h += `<div class="upload-area" onclick="openModal('chirashiEdit')" style="cursor:pointer">
-      <span class="upload-icon">📋</span>
-      <div class="upload-text">他のAIでチラシをテキスト化して<br>ここに貼り付けてね🌸</div>
-    </div>`;
-  }
-
-  h += '<div class="sec-label">🌸 今日のメニュー</div>';
-  if (!S.chirashiLoaded) {
-    h += '<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:14px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">🗞️</span><div style="flex:1;font-size:12px;font-weight:700;color:#B5740A">チラシを読み込むと予算内で特売品を活かした献立を提案できるよ！</div></div>';
-  }
-  h += `<div class="ai-banner">💡 AI提案：在庫・チラシ・栄養バランスを考慮してご提案♪</div>
-  <div class="card">`;
+  h += `<div class="ai-banner">💡 在庫食材・お気に入り・栄養バランスを考慮して提案します</div>`;
+  h += `<div class="card">`;
 
   const mealCfg = {
     朝:{icon:'☀️',cls:'meal-icon-asa',btnCls:'btn-primary'},
@@ -351,16 +329,16 @@ function rToday() {
   };
 
   ['朝','昼','夜'].forEach(t => {
-    const m = S.meals[t];
+    const m = S.tomorrow[t];
     const cfg = mealCfg[t];
     if (m.name) {
       h += `<div class="meal-row" style="flex-wrap:wrap;gap:6px">
         <div class="meal-icon ${cfg.cls}">${cfg.icon}</div>
         <span class="meal-label">${t}</span>
-        <span class="meal-name" onclick="openModal('editTodayMeal','${t}')" style="cursor:pointer;text-decoration:underline dotted #F5C0C8">${m.name}</span>
+        <span class="meal-name" onclick="openModal('editMeal','${t}')">${m.name}（${m.persons}人）</span>
         <div style="display:flex;gap:5px;align-items:center">
-          ${m.recipe ? `<button class="btn btn-sm" onclick="openModal('recipe','${t}')">📖 レシピ</button>` : ''}
-          <button class="heart-btn" onclick="toggleLike('${t}')">${m.liked ? '❤️' : '🤍'}</button>
+          ${m.recipe ? `<button class="btn btn-sm" onclick="openModal('recipe','${t}')">📖</button>` : ''}
+          <button class="heart-btn" onclick="toggleLike('${t}')">${m.liked?'❤️':'🤍'}</button>
         </div>
       </div>`;
     } else {
@@ -373,56 +351,31 @@ function rToday() {
     }
   });
 
-  h += `</div>
-  <button class="btn btn-primary btn-full" style="border-radius:18px;font-size:15px;padding:18px;box-shadow:0 8px 24px rgba(212,96,122,0.4)" onclick="openModal('suggest','all')">
-    ✨ 全食まとめて提案してもらう 🩷
-  </button>`;
-  return h;
-}
+  h += `</div>`;
 
-function rWeek() {
-  const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - todayDow);
-  const hasWeekMeals = Object.values(S.week).some(m => Object.keys(m).length > 0);
-  let chirashiAlert = '';
-  if (!S.chirashiLoaded) {
-    chirashiAlert = `<div style="background:linear-gradient(135deg,#FFF8E8,#FFF3D6);border:2px solid #F5DFA0;border-radius:16px;padding:13px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">🗞️</span><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#B5740A">チラシを先に読み込もう！</div><div style="font-size:12px;color:#B5740A;margin-top:2px">今日タブからチラシを追加すると予算内で特売品を活かした献立が作れるよ🌸</div></div><button class="btn btn-sm" style="border-color:#F5DFA0;color:#B5740A;flex-shrink:0;white-space:nowrap" onclick="switchPage('today')">追加する</button></div>`;
-  } else {
-    chirashiAlert = `<div style="background:#EAF5EE;border:2px solid #A8DDB8;border-radius:16px;padding:11px 16px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-size:20px">✅</span><div style="font-size:13px;font-weight:700;color:#2D8A4E">チラシ読み込み済み！特売品を考慮して提案します</div></div>`;
-  }
-
-  let h = chirashiAlert + `
-  <button class="btn btn-primary btn-full" style="margin-bottom:8px;border-radius:18px;font-size:15px;padding:16px" onclick="openModal('weekSuggest')">
-    ✨ 1週間分まとめて提案してもらう 🩷
-  </button>
-  ${hasWeekMeals ? `<button class="btn btn-full" style="margin-bottom:12px;border-color:#F5C0C8;color:#D4607A;border-radius:18px;padding:14px;font-size:14px" onclick="openModal('weekShoppingConfirm')">🛒 今週の買い物リストを作る</button>` : ''}
-  <div class="card"><div class="week-grid">`;
-  DAYS.forEach(d => { h += `<div class="wk-day">${d}</div>`; });
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(startOfWeek);
-    d.setDate(startOfWeek.getDate() + i);
-    const isToday = i === todayDow;
-    const hasDot = Object.keys(S.week[i]||{}).length > 0;
-    h += `<div class="wk-date ${isToday?'today':''} ${hasDot?'has-dot':''}" onclick="openModal('dayedit',${i})">${d.getDate()}</div>`;
-  }
-  h += `</div></div>`;
-  for (let i = 0; i < 7; i++) {
-    const meals = S.week[i] || {};
-    const d = new Date(startOfWeek);
-    d.setDate(startOfWeek.getDate() + i);
-    const isToday = i === todayDow;
-    if (!isToday && Object.keys(meals).length === 0) continue;
-    h += `<div class="sec-label">🌸 ${d.getMonth()+1}/${d.getDate()}（${DAYS[i]}）${isToday?' 今日':''}</div><div class="card">`;
-    let hasAny = false;
-    ['朝','昼','夜'].forEach(s => {
-      if (meals[s]) { hasAny = true; h += `<div class="meal-row"><span class="meal-label">${s}</span><span class="meal-name">${meals[s]}</span><button class="heart-btn">🤍</button></div>`; }
+  // 買い物リスト
+  if (S.shopping.length > 0) {
+    h += `<div class="sec-label">🛒 買い物リスト（不足食材）</div><div class="card">`;
+    S.shopping.forEach((item, idx) => {
+      h += `<div class="shop-row">
+        <div class="check-box ${item.done?'checked':''}" onclick="toggleShop(${idx})">
+          ${item.done?'<span style="color:#fff;font-size:15px;font-weight:900">✓</span>':''}
+        </div>
+        <span class="check-text ${item.done?'done':''}">${item.name}</span>
+        <button class="btn btn-sm btn-ghost" onclick="removeShop(${idx})" style="color:#C0392B;padding:4px 8px">✕</button>
+      </div>`;
     });
-    if (!hasAny) h += `<div style="font-size:14px;color:#DDB8C0;padding:4px 0;font-weight:600">まだ決まっていません</div>`;
-    h += `<div style="padding-top:10px"><button class="btn btn-sm" onclick="openModal('dayedit',${i})">✏️ 編集する</button></div></div>`;
+    h += `</div>`;
   }
+
+  h += `<button class="btn btn-primary btn-full" style="border-radius:18px;font-size:15px;padding:18px;margin-top:4px" onclick="openModal('suggestAll')">
+    ✨ 明日の3食をまとめて提案してもらう 🩷
+  </button>`;
+
   return h;
 }
 
+// ── 在庫タブ ──
 function rStock() {
   let h = `<div class="tabs">`;
   ['食材','調味料','日用品'].forEach(cat => {
@@ -435,249 +388,190 @@ function rStock() {
   } else {
     items.forEach((item, idx) => {
       const exTag = item.expiry ? `<span class="expiry-tag ${item.warn?'expiry-warn':'expiry-ok'}">${item.expiry}</span>` : '';
-      const amtColor = item.warn ? 'color:#D4607A;font-weight:800' : '';
-      h += `<div class="stock-row"><span class="stock-name">${item.name}${exTag}</span><span class="stock-amount" style="${amtColor}">${item.amount}</span><button class="btn btn-sm btn-ghost" onclick="openModal('editstock','${S.stockTab}',${idx})">✏️</button></div>`;
+      h += `<div class="stock-row">
+        <span class="stock-name">${item.name}${exTag}</span>
+        <span class="stock-amount" style="${item.warn?'color:#D4607A;font-weight:800':''}">${item.amount}</span>
+        <button class="btn btn-sm btn-ghost" onclick="openModal('editStock','${S.stockTab}',${idx})">✏️</button>
+      </div>`;
     });
   }
-  h += `</div><button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="openModal('addstock')">＋ 在庫を追加 🌸</button>`;
+  h += `</div><button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="openModal('addStock')">＋ 追加する 🌸</button>`;
   return h;
 }
 
-function rShopping() {
-  let totalLeft = 0;
-  Object.values(S.shopping).forEach(arr => arr.forEach(i => { if (!i.done) totalLeft++; }));
-  let h = '';
-  const storeKeys = Object.keys(S.shopping);
-  if (storeKeys.length === 0) {
-    h += `<div style="text-align:center;padding:40px 20px;color:#DDB8C0"><div style="font-size:48px;margin-bottom:12px">🛒</div><div style="font-size:14px;font-weight:700">買い物リストはまだ空です🌸<br><span style="font-weight:500;font-size:13px">献立を提案すると自動で追加されます</span></div></div>`;
-  } else if (totalLeft === 0) {
-    h += `<div class="card" style="background:#E4F5EA;border-color:#A8DDB8;margin-bottom:12px"><div style="font-size:14px;font-weight:800;color:#2D8A4E">✅ 全部買えた！お疲れさま🩷</div></div>`;
+// ── 記録タブ ──
+function rWeek() {
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - todayDow);
+  let h = `<div class="sec-label" style="margin-top:0">📅 今週の献立記録</div>
+  <div class="card"><div class="week-grid">`;
+  DAYS.forEach(d => { h += `<div class="wk-day">${d}</div>`; });
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    const isToday = i === todayDow;
+    const hasDot = Object.keys(S.week[i]||{}).length > 0;
+    h += `<div class="wk-date ${isToday?'today':''} ${hasDot?'has-dot':''}" onclick="openModal('weekDetail',${i})">${d.getDate()}</div>`;
   }
-  Object.entries(S.shopping).forEach(([store, items]) => {
-    const left = items.filter(i => !i.done).length;
-    h += `<div class="sec-label">🏪 ${store} <span style="font-weight:600;color:#CBA0A8">${left > 0 ? `残り${left}品` : '✓ 完了'}</span></div><div class="card">`;
-    items.forEach((item, idx) => {
-      h += `<div class="check-row"><div class="check-box ${item.done?'checked':''}" onclick="toggleCheck('${store}',${idx})">${item.done ? '<span style="color:#fff;font-size:16px;font-weight:900">✓</span>' : ''}</div><span class="check-text ${item.done?'done':''}">${item.name}</span></div>`;
+  h += `</div></div>`;
+
+  for (let i = 0; i < 7; i++) {
+    const meals = S.week[i] || {};
+    if (Object.keys(meals).length === 0) continue;
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    h += `<div class="sec-label">🌸 ${d.getMonth()+1}/${d.getDate()}（${DAYS[i]}）</div><div class="card">`;
+    ['朝','昼','夜'].forEach(s => {
+      if (meals[s]) h += `<div class="meal-row"><span class="meal-label">${s}</span><span style="flex:1;font-size:13px;font-weight:600">${meals[s].name}（${meals[s].persons}人）</span>${meals[s].liked?'<span>❤️</span>':''}</div>`;
     });
     h += `</div>`;
-  });
-  h += `<button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="openModal('addshop')">＋ アイテムを追加 🌸</button>`;
+  }
   return h;
 }
 
+// ── お気に入りタブ ──
 function rFav() {
   const medals = ['🥇','🥈','🥉'];
-  let h = `<div class="ai-banner">🩷 ❤️をつけたメニューが自動でたまっていくよ♪</div>`;
+  const catLabel = {main:'🍖 メイン', side:'🥗 副菜', soup:'🍜 汁物', complete:'🍱 完結系'};
+  const catColor = {main:'#FFE4EC', side:'#E4F5EA', soup:'#E8E4F5', complete:'#FFF5E4'};
+  const catTextColor = {main:'#D4607A', side:'#2D8A4E', soup:'#6040C0', complete:'#B5740A'};
+  let h = `<div class="ai-banner">🩷 お気に入りが増えるほど提案が豊かになるよ♪</div>`;
   if (S.fav.length === 0) {
-    h += `<div style="text-align:center;padding:40px 20px;color:#DDB8C0"><div style="font-size:48px;margin-bottom:12px">🍽️</div><div style="font-size:14px;font-weight:700">まだお気に入りがありません<br><span style="font-weight:500;font-size:13px">今日の献立に❤️をつけてみよう！</span></div></div>`;
+    h += `<div style="text-align:center;padding:40px 20px;color:#DDB8C0"><div style="font-size:48px;margin-bottom:12px">🍽️</div><div style="font-size:14px;font-weight:700">まだお気に入りがありません<br><span style="font-weight:500;font-size:13px">献立に❤️をつけてみよう！</span></div></div>`;
   } else {
-    const catLabel = {main:'🍖 メイン', side:'🥗 副菜', soup:'🍜 汁物', complete:'🍱 完結系'};
-    const catColor = {main:'#FFE4EC', side:'#E4F5EA', soup:'#E8E4F5', complete:'#FFF5E4'};
-    const catTextColor = {main:'#D4607A', side:'#2D8A4E', soup:'#6040C0', complete:'#B5740A'};
     S.fav.forEach((f, i) => {
       const cat = f.category || 'main';
-      const label = catLabel[cat] || '🍖 メイン';
-      const bg = catColor[cat] || '#FFE4EC';
-      const tc = catTextColor[cat] || '#D4607A';
-      h += `<div class="fav-card"><div class="fav-rank">${i < 3 ? medals[i] : '🩷'}</div><div class="fav-info"><div class="fav-name">${f.name}</div><div style="display:flex;align-items:center;gap:6px;margin-top:3px"><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${bg};color:${tc}">${label}</span><span class="fav-count" style="margin-top:0">❤️ ${f.count}回</span></div></div><div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="openModal('favplan','${f.name}')">今週に入れる</button><button class="btn btn-sm btn-ghost" onclick="deleteFav(${i})" style="color:#C0392B">🗑️</button></div></div>`;
+      h += `<div class="fav-card">
+        <div class="fav-rank">${i < 3 ? medals[i] : '🩷'}</div>
+        <div class="fav-info">
+          <div class="fav-name">${f.name}</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+            <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${catColor[cat]};color:${catTextColor[cat]}">${catLabel[cat]||'🍖 メイン'}</span>
+            <span style="font-size:12px;color:#CBA0A8;font-weight:600">❤️ ${f.count}回</span>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-ghost" onclick="deleteFav(${i})" style="color:#C0392B">🗑️</button>
+      </div>`;
     });
   }
-  h += `<button class="btn btn-full" style="margin-top:4px;border-color:#F5C0C8;color:#D4607A" onclick="openModal('addfav')">＋ 手動で追加する 🌸</button>`;
+  h += `<button class="btn btn-full" style="margin-top:4px;border-color:#F5C0C8;color:#D4607A" onclick="openModal('addFav')">＋ 手動で追加する 🌸</button>`;
   return h;
 }
 
-function toggleLike(time) {
-  const m = S.meals[time];
-  m.liked = !m.liked;
-  if (m.liked && m.name) {
-    const ex = S.fav.find(f => f.name === m.name);
-    if (ex) ex.count++; else S.fav.unshift({name: m.name, count: 1});
-    S.fav.sort((a,b) => b.count - a.count);
-    showToast('❤️ お気に入りに追加しました');
+// ── 献立提案ロジック ──
+function isWeekendDay(date) {
+  return date.getDay() === 0 || date.getDay() === 6;
+}
+
+function suggestMeal(time, persons) {
+  const isWeekend = isWeekendDay(tomorrow);
+  const favMains = S.fav.filter(f => f.category === 'main');
+  const favComplete = S.fav.filter(f => f.category === 'complete');
+  const favSides = S.fav.filter(f => f.category === 'side');
+  const favSoups = S.fav.filter(f => f.category === 'soup');
+  const ngFoods = S.family.flatMap(m => m.ng);
+
+  // 在庫の食材名リスト
+  const stockItems = S.stock.食材.map(i => i.name);
+
+  if (time === '朝') {
+    const menu = MENU_POOL.朝[Math.floor(Math.random() * MENU_POOL.朝.length)];
+    return { name: menu, recipe: null, shopping: [] };
   }
-  saveData(); render();
+
+  if (time === '昼') {
+    const pool = isWeekend ? MENU_POOL.昼_休日 : MENU_POOL.昼_平日;
+    const menu = pool[Math.floor(Math.random() * pool.length)];
+    return { name: menu, recipe: null, shopping: [] };
+  }
+
+  if (time === '夜') {
+    // お気に入りのメインを確率的に使う
+    if (favMains.length > 0 && Math.random() > 0.4) {
+      const fav = favMains[Math.floor(Math.random() * favMains.length)];
+      // NGチェック
+      const hasNG = ngFoods.some(ng => fav.name.includes(ng));
+      if (!hasNG) {
+        const side1 = favSides.length > 0 ? favSides[Math.floor(Math.random()*favSides.length)].name : 'ほうれん草のお浸し';
+        const side2 = favSides.length > 1 ? favSides.filter(s=>s.name!==side1)[Math.floor(Math.random()*(favSides.length-1))].name : 'きゅうりの酢の物';
+        const soup = favSoups.length > 0 ? favSoups[Math.floor(Math.random()*favSoups.length)].name : '味噌汁';
+        return { name: `${fav.name}・${side1}・${side2}・${soup}・ご飯`, recipe: null, shopping: [] };
+      }
+    }
+
+    // 完結系
+    if (Math.random() > 0.75) {
+      const pool = [...MENU_POOL.夜_完結, ...(favComplete.map(f => ({main:f.name, sides:'', complete:true})))];
+      const item = pool[Math.floor(Math.random() * pool.length)];
+      return { name: item.main + (item.sides ? '・' + item.sides : ''), recipe: null, shopping: [] };
+    }
+
+    // 和洋中バランス
+    const cats = ['夜_和','夜_洋','夜_中'];
+    const cat = cats[Math.floor(Math.random() * cats.length)];
+    const pool = MENU_POOL[cat];
+    const item = pool[Math.floor(Math.random() * pool.length)];
+
+    // NGチェック
+    const hasNG = ngFoods.some(ng => item.main.includes(ng) || item.sides.includes(ng));
+    if (hasNG) {
+      const fallback = MENU_POOL.夜_和[0];
+      return { name: `${fallback.main}・${fallback.sides}`, recipe: null, shopping: [] };
+    }
+
+    return { name: `${item.main}・${item.sides}`, recipe: null, shopping: [] };
+  }
+
+  return { name: '未定', recipe: null, shopping: [] };
 }
 
-function toggleCheck(store, idx) {
-  S.shopping[store][idx].done = !S.shopping[store][idx].done;
-  saveData(); render();
-}
-
-function deleteFav(idx) {
-  S.fav.splice(idx, 1);
-  showToast('🗑️ 削除しました');
-  saveData(); render();
-}
-
-function saveChirashiText() {
-  const input = document.getElementById('chirashi-text-input');
-  if (!input || !input.value.trim()) { showToast('チラシの内容を入力してね'); return; }
-  S.chirashiText = input.value.trim();
-  S.chirashiLoaded = true;
-  saveData();
-  showToast('🗞️ チラシ情報を保存しました！');
-  closeModal();
-  render();
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
-}
-
+// ── モーダル ──
 function openModal(type, a1, a2) {
   const bd = document.getElementById('modal-backdrop');
   const inn = document.getElementById('modal-inner');
   bd.classList.add('open');
 
-  if (type === 'chirashiEdit') {
-    inn.innerHTML = `<div class="modal-title">🗞️ チラシ情報を入力</div>
-      <div style="font-size:12px;color:#C08090;margin-bottom:10px;line-height:1.7;font-weight:600">ChatGPTやGeminiでチラシのスクショをテキスト化して下にペーストしてね🌸<br><span style="color:#D4607A">例）マツモト：豚バラ198円、鶏もも398円...<br>業務スーパー：卵158円、牛乳138円...</span></div>
-      <div class="input-group">
-        <textarea id="chirashi-text-input" class="input-field" style="height:180px;resize:none;line-height:1.7" placeholder="チラシの内容をここに貼り付けてね">${S.chirashiText || ''}</textarea>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="saveChirashiText()">保存する 🌸</button>`;
-
-  } else if (type === 'weekSuggest') {
-    inn.innerHTML = `<div class="modal-title">✨ 1週間の献立を提案</div>
-      <div class="card-sm" style="margin-bottom:12px">
-        <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">基本の人数</div>
-        <div style="display:flex;gap:7px" id="persons-row">
-          <button class="store-btn ${S.weekPersons===2?'active':''}" onclick="selectBtn('persons-row',this);S.weekPersons=2">2人分</button>
-          <button class="store-btn ${S.weekPersons===3?'active':''}" onclick="selectBtn('persons-row',this);S.weekPersons=3">3人分</button>
-          <button class="store-btn ${S.weekPersons===4?'active':''}" onclick="selectBtn('persons-row',this);S.weekPersons=4">4人分</button>
-        </div>
-      </div>
-      <div class="card-sm" style="margin-bottom:12px">
-        <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">提案する食事</div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap">
-          <button class="store-btn ${S.weekMeals.朝?'active':''}" onclick="this.classList.toggle('active');S.weekMeals.朝=!S.weekMeals.朝">朝ごはん</button>
-          <button class="store-btn ${S.weekMeals.昼?'active':''}" onclick="this.classList.toggle('active');S.weekMeals.昼=!S.weekMeals.昼">昼ごはん</button>
-          <button class="store-btn ${S.weekMeals.夜?'active':''}" onclick="this.classList.toggle('active');S.weekMeals.夜=!S.weekMeals.夜">夜ごはん</button>
-        </div>
-      </div>
-      <div class="card-sm" style="margin-bottom:16px">
-        <div style="font-size:13px;color:#C08090;margin-bottom:6px;font-weight:700">考慮すること</div>
-        <div style="font-size:13px;line-height:1.8;font-weight:600">📦 在庫状況・消費期限<br>💚 栄養バランス・和洋中バランス<br>🐷 週¥${S.budget.goal.toLocaleString()}の予算内</div>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="demoWeekSuggest()">✨ AIに提案してもらう 🩷</button>`;
-
-  } else if (type === 'editTodayMeal') {
-    const t = a1;
-    const m = S.meals[t];
-    inn.innerHTML = `<div class="modal-title">✏️ ${t}ごはんを変更</div>
-      <div class="input-group"><label class="input-label">メニュー名</label><input id="today-meal-input" class="input-field" placeholder="例：カレーライス" value="${m.name||''}"></div>
-      <div class="input-group"><label class="input-label">何人分？</label>
-        <div style="display:flex;gap:7px;margin-top:6px">${[2,3,4].map(n=>`<button class="btn btn-sm ${m.persons===n?'btn-primary':''}" onclick="selectPersons(${n},this)">${n}人分</button>`).join('')}</div>
-      </div>
-      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="updateTodayMeal('${t}')">保存する 🌸</button>
-      <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="openModal('suggest','${t}')">✨ AIに提案してもらう</button>`;
-
-  } else if (type === 'weekShoppingConfirm') {
-    const weekItems = {
-      '万代': ['豚バラ 400g', '鶏もも肉 600g', '卵 10個', 'キャベツ 1玉', 'ほうれん草 1束', '玉ねぎ 3個', '豆腐 2丁', '納豆 3パック'],
-      '業務スーパー': ['冷凍うどん 5食', '冷凍えだまめ', 'ちくわ 1袋'],
-    };
-    let storeHtml = '';
-    Object.entries(weekItems).forEach(([store, list]) => {
-      storeHtml += `<div style="margin-bottom:14px"><div style="font-size:13px;font-weight:800;color:#C08090;margin-bottom:8px">🏪 ${store}</div>`;
-      list.forEach(item => { storeHtml += `<div style="font-size:13px;padding:6px 0;border-bottom:1px dashed #FFE8EC;font-weight:600">・${item}</div>`; });
-      storeHtml += `</div>`;
-    });
-    inn.innerHTML = `<div class="modal-title">🛒 今週の買い物リスト</div>
-      <div class="ai-banner" style="margin-bottom:14px">✨ 1週間分の献立から自動で作成しました</div>
-      <div class="card" style="margin-bottom:16px">${storeHtml}</div>
-      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="addWeekShoppingList()">買い物リストに追加する 🌸</button>
-      <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="closeModal()">閉じる</button>`;
+  if (type === 'suggestAll') {
+    inn.innerHTML = `<div class="modal-title">✨ 明日の献立を提案</div>
+      ${['朝','昼','夜'].map(t => `
+        <div class="card-sm" style="margin-bottom:10px">
+          <div style="font-size:13px;font-weight:800;color:#C08090;margin-bottom:8px">${t === '朝' ? '☀️' : t === '昼' ? '🌤️' : '🌙'} ${t}ごはん　何人分？</div>
+          <div class="persons-row" id="persons-${t}">
+            ${[1,2,3,4].map(n => `<button class="person-btn ${S.tomorrow[t].persons===n?'active':''}" onclick="setPersons('${t}',${n},this)">${n}人</button>`).join('')}
+          </div>
+        </div>`).join('')}
+      <button class="btn btn-primary btn-full" style="margin-top:6px" onclick="doSuggestAll()">✨ 提案してもらう 🩷</button>`;
 
   } else if (type === 'suggest') {
-    const label = a1 === 'all' ? '今日の全食' : `今日の${a1}ごはん`;
-    inn.innerHTML = `<div class="modal-title">✨ ${label}の献立を提案</div>
-      <div class="card-sm" style="margin-bottom:12px">
-        <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">何人分？</div>
-        <div style="display:flex;gap:7px">${[2,3,4].map(n=>`<button class="btn btn-sm ${n===4?'btn-primary':''}">${n}人分</button>`).join('')}</div>
-      </div>
-      <div class="card-sm" style="margin-bottom:16px">
-        <div style="font-size:13px;color:#C08090;margin-bottom:8px;font-weight:700">考慮すること</div>
-        <div style="font-size:13px;line-height:1.8;font-weight:600">📦 在庫状況・消費期限<br>🗞️ チラシの特売品<br>💚 栄養バランス・和洋中バランス</div>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="demoSuggest('${a1}')">✨ AIに提案してもらう 🩷</button>`;
-
-  } else if (type === 'settings') {
-    let h = `<div class="modal-title">⚙️ 設定</div>
-      <div class="sec-label" style="margin-top:0">👨‍👩‍👦‍👦 家族構成・苦手食材</div>
-      <div class="card" style="margin-bottom:14px">`;
-    S.family.forEach((m, idx) => {
-      h += `<div class="stock-row">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF8FAB,#D4607A);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0">${m.avatar}</div>
-        <div style="flex:1;margin-left:10px"><div style="font-size:14px;font-weight:800">${m.name}</div><div class="ng-list">${m.ng.map(n=>`<span class="ng-chip">🙅 ${n}</span>`).join('')}</div></div>
-        <button class="btn btn-sm btn-ghost" onclick="openModal('editFamily',${idx})">✏️</button>
-      </div>`;
-    });
-    h += `</div>
-      <div class="sec-label">🐷 週の予算</div>
-      <div class="card" style="margin-bottom:14px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <span style="font-size:14px;font-weight:700">目標額</span>
-          <span style="font-size:18px;font-weight:900;color:#D4607A">¥${S.budget.goal.toLocaleString()}</span>
-        </div>
-        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-          <input id="budget-input" class="input-field" type="number" value="${S.budget.goal}" style="flex:1">
-          <button class="btn btn-sm btn-primary" onclick="saveBudget()">保存</button>
-        </div>
-      </div>
-      <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="closeModal()">閉じる</button>`;
-    inn.innerHTML = h;
-
-  } else if (type === 'editFamily') {
-    const idx = Number(a1);
-    const m = S.family[idx];
-    inn.innerHTML = `<div class="modal-title">✏️ ${m.name}の設定</div>
+    const t = a1;
+    inn.innerHTML = `<div class="modal-title">${t === '朝'?'☀️':t==='昼'?'🌤️':'🌙'} ${t}ごはんを提案</div>
       <div class="input-group">
-        <label class="input-label">苦手食材（カンマ区切り）</label>
-        <input id="ng-input" class="input-field" placeholder="例：ピーマン、にんじん" value="${m.ng.join('、')}">
-      </div>
-      <button class="btn btn-primary btn-full" onclick="saveFamily(${idx})">保存する 🌸</button>`;
-
-  } else if (type === 'addstock') {
-    inn.innerHTML = `<div class="modal-title">📦 在庫を追加</div>
-      <div class="input-group"><label class="input-label">食材・品名</label><input id="stock-name-input" class="input-field" placeholder="例：豚バラ、シャンプー"></div>
-      <div class="input-group"><label class="input-label">量</label><input id="stock-amt-input" class="input-field" placeholder="例：300g、2個、1本"></div>
-      <div class="input-group"><label class="input-label">消費期限（任意）</label><input id="stock-date-input" class="input-field" type="date"></div>
-      <div class="input-group"><label class="input-label">カテゴリ</label>
-        <div class="store-row" id="cat-row">
-          <button class="store-btn active" onclick="selectBtn('cat-row',this)">食材</button>
-          <button class="store-btn" onclick="selectBtn('cat-row',this)">調味料</button>
-          <button class="store-btn" onclick="selectBtn('cat-row',this)">日用品</button>
+        <label class="input-label">何人分？</label>
+        <div class="persons-row" id="persons-single">
+          ${[1,2,3,4].map(n => `<button class="person-btn ${S.tomorrow[t].persons===n?'active':''}" onclick="setPersons('${t}',${n},this)">${n}人</button>`).join('')}
         </div>
       </div>
-      <button class="btn btn-primary btn-full" onclick="addStockAndClose()">追加する 🌸</button>`;
+      <button class="btn btn-primary btn-full" onclick="doSuggestSingle('${t}')">✨ 提案してもらう 🩷</button>`;
 
-  } else if (type === 'editstock') {
-    const item = S.stock[a1][a2];
-    inn.innerHTML = `<div class="modal-title">✏️ 在庫を編集</div>
-      <div class="input-group"><label class="input-label">食材名</label><input class="input-field" value="${item.name}"></div>
-      <div class="input-group"><label class="input-label">量</label><input class="input-field" value="${item.amount}"></div>
-      ${item.expiry ? `<div class="input-group"><label class="input-label">消費期限</label><input class="input-field" value="${item.expiry}"></div>` : ''}
-      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="showToast('✅ 更新しました');closeModal()">保存する</button>
-      <button class="btn btn-full" style="color:#C0392B;border-color:#FBDADA" onclick="showToast('🗑️ 削除しました');closeModal()">この在庫を削除</button>`;
-
-  } else if (type === 'addshop') {
-    inn.innerHTML = `<div class="modal-title">🛒 買い物リストに追加</div>
-      <div class="input-group"><label class="input-label">品名</label><input id="shop-name-input" class="input-field" placeholder="例：牛乳 1L、たまご"></div>
-      <div class="input-group"><label class="input-label">お店</label>
-        <div class="store-row" id="shop-row">
-          <button class="store-btn active" onclick="selectBtn('shop-row',this)">万代</button>
-          <button class="store-btn" onclick="selectBtn('shop-row',this)">業務スーパー</button>
-          <button class="store-btn" onclick="selectBtn('shop-row',this)">マツモト</button>
+  } else if (type === 'editMeal') {
+    const t = a1;
+    const m = S.tomorrow[t];
+    inn.innerHTML = `<div class="modal-title">✏️ ${t}ごはんを変更</div>
+      <div class="input-group">
+        <label class="input-label">メニュー名</label>
+        <input id="meal-input" class="input-field" value="${m.name||''}" placeholder="例：鮭の塩焼き・味噌汁">
+      </div>
+      <div class="input-group">
+        <label class="input-label">何人分？</label>
+        <div class="persons-row" id="persons-edit">
+          ${[1,2,3,4].map(n => `<button class="person-btn ${m.persons===n?'active':''}" onclick="setPersons('${t}',${n},this)">${n}人</button>`).join('')}
         </div>
       </div>
-      <button class="btn btn-primary btn-full" onclick="addShopAndClose()">追加する 🌸</button>`;
+      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="saveMealEdit('${t}')">保存する 🌸</button>
+      <button class="btn btn-full" style="color:#C0392B;border-color:#FBDADA" onclick="clearMeal('${t}')">この食事を削除</button>`;
 
   } else if (type === 'recipe') {
-    const m = S.meals[a1];
+    const m = S.tomorrow[a1];
     const r = m.recipe;
     if (!r) { closeModal(); return; }
     inn.innerHTML = `<div class="modal-title">📖 ${m.name}</div>
@@ -687,431 +581,234 @@ function openModal(type, a1, a2) {
       </div>
       <div class="sec-label">🌸 作り方</div>
       <div class="card" style="margin-bottom:14px">
-        ${r.steps.map((s,i) => `<div style="display:flex;gap:10px;padding:11px 0;border-bottom:1.5px dashed #FFE8EC;${i===r.steps.length-1?'border-bottom:none':''}">
+        ${r.steps.map((s,i) => `<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1.5px dashed #FFE8EC;${i===r.steps.length-1?'border-bottom:none':''}">
           <div style="min-width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#FF8FAB,#D4607A);color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div>
           <div style="font-size:13px;line-height:1.7;color:#3D2C2C;font-weight:500">${s}</div>
         </div>`).join('')}
       </div>
-      ${r.memo ? `<div class="warn-banner"><div class="warn-banner-title">💡 ポイント</div><div style="font-size:13px;color:#666;margin-top:4px;font-weight:500">${r.memo}</div></div>` : ''}
       <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="closeModal()">閉じる</button>`;
 
-  } else if (type === 'addfav') {
-    inn.innerHTML = `<div class="modal-title">🩷 お気に入りを追加</div>
-      <div class="input-group"><label class="input-label">メニュー名</label><input class="input-field" id="fav-input" placeholder="例：唐揚げ、ほうれん草のお浸し"></div>
+  } else if (type === 'addStock') {
+    inn.innerHTML = `<div class="modal-title">📦 在庫を追加</div>
+      <div class="input-group"><label class="input-label">品名</label><input id="stock-name" class="input-field" placeholder="例：豚バラ、シャンプー"></div>
+      <div class="input-group"><label class="input-label">量</label><input id="stock-amt" class="input-field" placeholder="例：300g、2個、1本"></div>
+      <div class="input-group"><label class="input-label">賞味期限（任意）</label><input id="stock-exp" class="input-field" type="date"></div>
       <div class="input-group"><label class="input-label">カテゴリ</label>
-        <div class="store-row" id="fav-cat-row" style="margin-top:8px">
+        <div class="store-row" id="stock-cat-row">
+          <button class="store-btn active" onclick="selectBtn('stock-cat-row',this)">食材</button>
+          <button class="store-btn" onclick="selectBtn('stock-cat-row',this)">調味料</button>
+          <button class="store-btn" onclick="selectBtn('stock-cat-row',this)">日用品</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="addStock()">追加する 🌸</button>`;
+
+  } else if (type === 'editStock') {
+    const item = S.stock[a1][Number(a2)];
+    inn.innerHTML = `<div class="modal-title">✏️ 在庫を編集</div>
+      <div class="input-group"><label class="input-label">品名</label><input id="edit-stock-name" class="input-field" value="${item.name}"></div>
+      <div class="input-group"><label class="input-label">量</label><input id="edit-stock-amt" class="input-field" value="${item.amount}"></div>
+      ${item.expiry ? `<div class="input-group"><label class="input-label">賞味期限</label><input id="edit-stock-exp" class="input-field" value="${item.expiry}"></div>` : ''}
+      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="saveStock('${a1}',${a2})">保存する</button>
+      <button class="btn btn-full" style="color:#C0392B;border-color:#FBDADA" onclick="deleteStock('${a1}',${a2})">削除する</button>`;
+
+  } else if (type === 'addFav') {
+    inn.innerHTML = `<div class="modal-title">🩷 お気に入りを追加</div>
+      <div class="input-group"><label class="input-label">メニュー名</label><input id="fav-input" class="input-field" placeholder="例：唐揚げ、肉じゃが"></div>
+      <div class="input-group"><label class="input-label">カテゴリ</label>
+        <div class="store-row" id="fav-cat-row">
           <button class="store-btn active" onclick="selectBtn('fav-cat-row',this)">🍖 メイン</button>
           <button class="store-btn" onclick="selectBtn('fav-cat-row',this)">🥗 副菜</button>
           <button class="store-btn" onclick="selectBtn('fav-cat-row',this)">🍜 汁物</button>
           <button class="store-btn" onclick="selectBtn('fav-cat-row',this)">🍱 完結系</button>
         </div>
         <div style="font-size:11px;color:#C08090;margin-top:8px;line-height:1.6">
-          🍖 メイン：唐揚げ・生姜焼き・焼き魚など<br>
-          🥗 副菜：お浸し・サラダ・煮物など<br>
-          🍜 汁物：味噌汁・豚汁・スープなど<br>
-          🍱 完結系：カレー・シチュー・ハッシュドビーフなど
+          🍖 メイン：唐揚げ・生姜焼きなど<br>🥗 副菜：お浸し・サラダなど<br>🍜 汁物：味噌汁・豚汁など<br>🍱 完結系：カレー・シチューなど
         </div>
       </div>
-      <button class="btn btn-primary btn-full" onclick="addFavManual()">追加する 🌸</button>`;
+      <button class="btn btn-primary btn-full" onclick="addFav()">追加する 🌸</button>`;
 
-  } else if (type === 'favplan') {
-    inn.innerHTML = `<div class="modal-title">🩷「${a1}」を今週の献立に</div>
-      <div class="card-sm" style="margin-bottom:14px">
-        <div style="font-size:13px;color:#C08090;margin-bottom:10px;font-weight:700">何日の何食に入れる？</div>
-        ${[0,1,2,3,4,5,6].map(i => {
-          const d = new Date(today); d.setDate(today.getDate()-todayDow+i);
-          return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
-            <span style="font-size:12px;min-width:68px;font-weight:700">${d.getMonth()+1}/${d.getDate()}（${DAYS[i]}）</span>
-            <div style="display:flex;gap:5px">${['朝','昼','夜'].map(t=>`<button class="btn btn-sm" style="padding:5px 10px;font-size:11px">${t}</button>`).join('')}</div>
-          </div>`;
-        }).join('')}
+  } else if (type === 'settings') {
+    let h = `<div class="modal-title">⚙️ 設定</div>
+      <div class="sec-label" style="margin-top:0">👨‍👩‍👦‍👦 家族構成・苦手食材</div>
+      <div class="card" style="margin-bottom:14px">`;
+    S.family.forEach((m, idx) => {
+      h += `<div class="stock-row">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF8FAB,#D4607A);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0">${m.avatar}</div>
+        <div style="flex:1;margin-left:10px">
+          <div style="font-size:14px;font-weight:800">${m.name}</div>
+          <div class="ng-list">${m.ng.map(n=>`<span class="ng-chip">🙅 ${n}</span>`).join('')}</div>
+        </div>
+        <button class="btn btn-sm btn-ghost" onclick="openModal('editFamily',${idx})">✏️</button>
+      </div>`;
+    });
+    h += `</div><button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="closeModal()">閉じる</button>`;
+    inn.innerHTML = h;
+
+  } else if (type === 'editFamily') {
+    const m = S.family[Number(a1)];
+    inn.innerHTML = `<div class="modal-title">✏️ ${m.name}の設定</div>
+      <div class="input-group">
+        <label class="input-label">苦手食材（読点・カンマ区切り）</label>
+        <input id="ng-input" class="input-field" value="${m.ng.join('、')}" placeholder="例：ピーマン、にんじん">
       </div>
-      <button class="btn btn-primary btn-full" onclick="showToast('📅 献立に追加しました！');closeModal()">追加する 🌸</button>`;
+      <button class="btn btn-primary btn-full" onclick="saveFamily(${a1})">保存する 🌸</button>`;
 
-  } else if (type === 'dayedit') {
+  } else if (type === 'weekDetail') {
     const dow = Number(a1);
     const d = new Date(today); d.setDate(today.getDate()-todayDow+dow);
     const meals = S.week[dow] || {};
-    inn.innerHTML = `<div class="modal-title">${d.getMonth()+1}/${d.getDate()}（${DAYS[dow]}）の献立</div>
+    inn.innerHTML = `<div class="modal-title">${d.getMonth()+1}/${d.getDate()}（${DAYS[dow]}）の記録</div>
       ${['朝','昼','夜'].map(s => `
-        <div class="input-group">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-            <label class="input-label" style="margin:0">${s}ごはん</label>
-            <select class="select-field"><option>4人</option><option>3人</option><option>2人</option><option>なし</option></select>
-          </div>
-          <input class="input-field" placeholder="${s}ごはんのメニュー" value="${meals[s]||''}">
+        <div style="padding:10px 0;border-bottom:1.5px dashed #FFE8EC">
+          <div style="font-size:12px;font-weight:800;color:#C08090;margin-bottom:4px">${s}ごはん</div>
+          <div style="font-size:14px;font-weight:600">${meals[s] ? meals[s].name + '（' + meals[s].persons + '人）' : '記録なし'}</div>
         </div>`).join('')}
-      <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="showToast('✅ 保存しました');closeModal()">保存する 🌸</button>
-      <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="openModal('suggest','all')">✨ AIに提案してもらう</button>`;
+      <div style="padding-top:14px">
+        <button class="btn btn-full" style="border-color:#F5C0C8;color:#D4607A" onclick="closeModal()">閉じる</button>
+      </div>`;
   }
 }
 
-function demoSuggest(slot) {
-  closeModal();
-  const recipes = {
-    朝:{name:'卵かけご飯・わかめ味噌汁・ミニサラダ',recipe:{ingredients:[{name:'ご飯',amount:'茶碗2杯'},{name:'卵',amount:'2個'},{name:'醤油',amount:'少々'},{name:'わかめ（乾燥）',amount:'大さじ1'},{name:'豆腐',amount:'½丁'},{name:'味噌',amount:'大さじ1.5'}],steps:['わかめを水で戻し、豆腐を一口大に切る。','鍋に出汁（200ml）を沸かし、豆腐を加えて1分煮る。','火を止めてから味噌を溶き入れ、わかめを加える。','茶碗にご飯を盛り、卵を割り入れ、醤油を少々かける。','お好みでミニサラダを添えて完成。'],memo:'卵はできるだけ新鮮なものを。醤油はかけすぎ注意！'}},
-    昼:{name:'豆腐と野菜の中華炒め・ご飯',recipe:{ingredients:[{name:'豆腐',amount:'1丁'},{name:'玉ねぎ',amount:'½個'},{name:'キャベツ',amount:'2〜3枚'},{name:'ごま油',amount:'大さじ1'},{name:'醤油',amount:'大さじ1'},{name:'オイスターソース',amount:'大さじ1'},{name:'片栗粉',amount:'小さじ1'},{name:'ご飯',amount:'茶碗2杯'}],steps:['豆腐はキッチンペーパーで水気を拭き、2cm角に切る。','玉ねぎは薄切り、キャベツはざく切りにする。','フライパンにごま油を熱し、豆腐を焼き色がつくまで焼く。','野菜を加えて炒め、しんなりしたら醤油・オイスターソースで味付け。','水溶き片栗粉でとろみをつけて完成。ご飯に盛りつける。'],memo:'豆腐はしっかり焼くと崩れにくくなります。'}},
-    夜:{name:'豚バラと玉ねぎの生姜炒め・ほうれん草のお浸し・味噌汁・ご飯',recipe:{ingredients:[{name:'豚バラ薄切り',amount:'200g'},{name:'玉ねぎ',amount:'1個'},{name:'しょうが',amount:'1かけ'},{name:'醤油',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},{name:'ほうれん草',amount:'1束'},{name:'めんつゆ',amount:'大さじ1'},{name:'ご飯',amount:'茶碗4杯'}],steps:['玉ねぎは薄切り、しょうがはすりおろす。','醤油・みりん・酒・しょうがを混ぜてタレを作る。','フライパンで豚バラを炒め、色が変わったら玉ねぎを加える。','玉ねぎがしんなりしたらタレを加え、全体に絡める。','ほうれん草は塩茹でして絞り、めんつゆで和える。','味噌汁は好みの具で作り、ご飯と一緒に盛りつける。'],memo:'タレはあらかじめ混ぜておくとスムーズ。甘めが好きならみりんを少し増やして。'}},
-  };
-  if (slot !== 'all' && recipes[slot]) {
-    S.meals[slot].name = recipes[slot].name;
-    S.meals[slot].recipe = recipes[slot].recipe;
-    showToast('✨ 献立を提案しました！');
-  } else {
-    ['朝','昼','夜'].forEach(t => { S.meals[t].name = recipes[t].name; S.meals[t].recipe = recipes[t].recipe; });
-    showToast('✨ 3食の献立を提案しました！');
-  }
-  syncWeekFromToday();
-  saveData(); render();
+// ── アクション ──
+function setPersons(time, n, el) {
+  S.tomorrow[time].persons = n;
+  const row = el.parentElement;
+  row.querySelectorAll('.person-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
 }
 
-const RECIPES = {
-  'トースト・目玉焼き・サラダ': {
-    ingredients:[{name:'食パン',amount:'2枚'},{name:'卵',amount:'2個'},{name:'バター',amount:'適量'},{name:'レタス',amount:'2枚'},{name:'ミニトマト',amount:'4個'}],
-    steps:['フライパンにバターを熱し、卵を割り入れて目玉焼きを作る。','トーストを焼く。','レタス・ミニトマトをお皿に盛りつけて完成。'],
-    memo:'目玉焼きは蓋をして蒸らすと黄身がちょうどよく仕上がります。'
-  },
-  'うどん': {
-    ingredients:[{name:'冷凍うどん',amount:'2玉'},{name:'めんつゆ',amount:'大さじ3'},{name:'水',amount:'400ml'},{name:'ねぎ',amount:'適量'},{name:'天かす',amount:'適量'}],
-    steps:['鍋に水とめんつゆを入れて沸かす。','うどんを加えてほぐしながら2〜3分煮る。','器に盛り、ねぎ・天かすをのせて完成。'],
-    memo:'お好みでわかめや卵を追加してもおいしいです。'
-  },
-  '豚の生姜焼き・味噌汁・ご飯': {
-    ingredients:[{name:'豚バラ薄切り',amount:'200g'},{name:'玉ねぎ',amount:'1個'},{name:'しょうが',amount:'1かけ'},{name:'醤油',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},{name:'ご飯',amount:'茶碗4杯'}],
-    steps:['玉ねぎは薄切り、しょうがはすりおろす。','醤油・みりん・酒・しょうがを混ぜてタレを作る。','フライパンで豚バラを炒め、玉ねぎを加える。','タレを加えて全体に絡めて完成。ご飯と一緒に盛りつける。'],
-    memo:'タレはあらかじめ混ぜておくとスムーズ！'
-  },
-  'ご飯・納豆・味噌汁': {
-    ingredients:[{name:'ご飯',amount:'茶碗4杯'},{name:'納豆',amount:'4パック'},{name:'豆腐',amount:'½丁'},{name:'わかめ',amount:'適量'},{name:'味噌',amount:'大さじ2'}],
-    steps:['鍋に出汁を沸かし、豆腐を加えて火を通す。','火を止めて味噌を溶き入れ、わかめを加える。','ご飯に納豆をのせて完成。'],
-    memo:'納豆はよく混ぜると甘みが出ておいしくなります。'
-  },
-  'チャーハン': {
-    ingredients:[{name:'ご飯',amount:'茶碗3杯'},{name:'卵',amount:'3個'},{name:'ねぎ',amount:'½本'},{name:'ハム',amount:'3枚'},{name:'醤油',amount:'大さじ1'},{name:'塩こしょう',amount:'適量'},{name:'ごま油',amount:'小さじ1'}],
-    steps:['卵を溶いておく。ねぎは小口切り、ハムは1cm角に切る。','フライパンを強火で熱し、卵を入れてすぐご飯を加えてほぐす。','ねぎ・ハムを加えて炒め、醤油・塩こしょうで味付け。','仕上げにごま油を回しかけて完成。'],
-    memo:'強火で手早く炒めるのがパラパラに仕上げるコツ！'
-  },
-  '鶏の唐揚げ・ポテトサラダ・ご飯': {
-    ingredients:[{name:'鶏もも肉',amount:'300g'},{name:'醤油',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},{name:'にんにく',amount:'1かけ'},{name:'しょうが',amount:'1かけ'},{name:'片栗粉',amount:'大さじ4'},{name:'じゃがいも',amount:'2個'},{name:'マヨネーズ',amount:'大さじ3'}],
-    steps:['鶏肉を一口大に切り、醤油・酒・にんにく・しょうがに30分漬ける。','片栗粉をまぶして170℃の油で4分揚げる。','じゃがいもを茹でてつぶし、マヨネーズで和えてポテトサラダを作る。'],
-    memo:'唐揚げは二度揚げするとさらにカリッと仕上がります！'
-  },
-  '肉じゃが・ご飯': {
-    ingredients:[{name:'牛こま肉',amount:'150g'},{name:'じゃがいも',amount:'3個'},{name:'玉ねぎ',amount:'1個'},{name:'にんじん',amount:'1本'},{name:'醤油',amount:'大さじ3'},{name:'みりん',amount:'大さじ3'},{name:'砂糖',amount:'大さじ1'},{name:'だし汁',amount:'300ml'}],
-    steps:['じゃがいも・にんじんは一口大、玉ねぎは薄切りにする。','鍋に油を熱し、牛肉・玉ねぎを炒める。','じゃがいも・にんじんを加えて炒め、だし汁と調味料を加える。','蓋をして中火で15分煮て完成。'],
-    memo:'じゃがいもは煮崩れしやすいので煮すぎ注意！'
-  },
-  'サバの味噌煮・ほうれん草のお浸し・ご飯': {
-    ingredients:[{name:'サバ',amount:'2切れ'},{name:'味噌',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},{name:'砂糖',amount:'大さじ1'},{name:'しょうが',amount:'1かけ'},{name:'ほうれん草',amount:'1束'},{name:'めんつゆ',amount:'大さじ1'}],
-    steps:['サバに熱湯をかけて臭みを取る。','鍋に水・みりん・砂糖・しょうがを入れて沸かし、サバを加える。','味噌を溶き入れて10分煮る。','ほうれん草は塩茹でして絞り、めんつゆで和える。'],
-    memo:'サバの臭み取りが大事！熱湯をしっかりかけてね。'
-  },
-  'カレーライス': {
-    ingredients:[{name:'鶏もも肉',amount:'300g'},{name:'玉ねぎ',amount:'2個'},{name:'じゃがいも',amount:'2個'},{name:'にんじん',amount:'1本'},{name:'カレールー',amount:'½箱'},{name:'水',amount:'700ml'},{name:'ご飯',amount:'茶碗4杯'}],
-    steps:['具材を一口大に切る。','鍋に油を熱し、玉ねぎをあめ色になるまで炒める。','肉・野菜を加えて炒め、水を加えて15分煮る。','火を止めてルーを溶かし、さらに5分煮て完成。'],
-    memo:'玉ねぎをしっかり炒めるほど甘くおいしいカレーになります！'
-  },
-  '餃子・中華スープ・ご飯': {
-    ingredients:[{name:'餃子（市販）',amount:'20個'},{name:'ごま油',amount:'大さじ1'},{name:'水',amount:'50ml'},{name:'卵',amount:'1個'},{name:'中華スープの素',amount:'小さじ2'},{name:'水',amount:'400ml'}],
-    steps:['フライパンにごま油を熱し、餃子を並べて焼き色をつける。','水を加えて蓋をし、5分蒸し焼きにする。','蓋を取って水分を飛ばしてパリッと仕上げる。','別鍋でスープを作り、溶き卵を加えてかき玉スープにする。'],
-    memo:'餃子は触らずじっくり焼くときれいな焼き色がつきます！'
-  },
-  '豚汁・鮭の塩焼き・ご飯': {
-    ingredients:[{name:'豚バラ',amount:'100g'},{name:'大根',amount:'¼本'},{name:'にんじん',amount:'½本'},{name:'こんにゃく',amount:'½枚'},{name:'味噌',amount:'大さじ2'},{name:'だし汁',amount:'600ml'},{name:'鮭',amount:'2切れ'}],
-    steps:['大根・にんじんをいちょう切り、こんにゃくは一口大にちぎる。','鍋に豚肉・野菜を炒め、だし汁を加えて煮る。','味噌を溶き入れて豚汁の完成。','鮭は塩を振って魚焼きグリルで7〜8分焼く。'],
-    memo:'豚汁は翌日さらにおいしくなります！多めに作ってもOK。'
-  },
-  'パン・ヨーグルト': {
-    ingredients:[{name:'食パン',amount:'2枚'},{name:'ヨーグルト',amount:'200g'},{name:'はちみつ',amount:'適量'},{name:'バナナ',amount:'1本'}],
-    steps:['パンをトーストする。','ヨーグルトを器に盛り、はちみつをかける。','バナナをスライスして添えて完成。'],
-    memo:'ヨーグルトに季節のフルーツを添えると栄養バランスアップ！'
-  },
-  'おにぎり・味噌汁': {
-    ingredients:[{name:'ご飯',amount:'茶碗3杯'},{name:'塩',amount:'適量'},{name:'のり',amount:'適量'},{name:'お好みの具',amount:'適量'},{name:'豆腐',amount:'½丁'},{name:'味噌',amount:'大さじ1.5'}],
-    steps:['ご飯を塩で味付けして、具を包んでおにぎりを握る。','のりを巻いて完成。','味噌汁は豆腐を加えて作る。'],
-    memo:'おにぎりはラップで握ると手が汚れず形もきれいに！'
-  },
-  'フレンチトースト': {
-    ingredients:[{name:'食パン',amount:'2枚'},{name:'卵',amount:'2個'},{name:'牛乳',amount:'100ml'},{name:'砂糖',amount:'大さじ1'},{name:'バター',amount:'10g'},{name:'メープルシロップ',amount:'適量'}],
-    steps:['卵・牛乳・砂糖を混ぜて卵液を作る。','パンを卵液に10分以上浸す。','バターを熱したフライパンで両面をじっくり焼く。','メープルシロップをかけて完成。'],
-    memo:'じっくり弱火で焼くとふわふわに仕上がります！'
-  },
-  '焼きそば': {
-    ingredients:[{name:'焼きそば麺',amount:'2玉'},{name:'豚バラ',amount:'100g'},{name:'キャベツ',amount:'3枚'},{name:'もやし',amount:'1袋'},{name:'ソース',amount:'大さじ3'},{name:'ごま油',amount:'小さじ1'}],
-    steps:['豚肉・野菜を炒め、麺を加えてほぐす。','ソースを加えて全体に絡める。','仕上げにごま油を回しかけて完成。'],
-    memo:'麺はほぐれにくければ少量の水を加えてOK！'
-  },
-  '豚の生姜焼き・キャベツの浅漬け・ほうれん草のお浸し・味噌汁・ご飯': {
-    ingredients:[
-      {name:'豚バラ薄切り',amount:'200g'},{name:'玉ねぎ',amount:'1個'},{name:'しょうが',amount:'1かけ'},
-      {name:'醤油',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},
-      {name:'キャベツ',amount:'¼玉'},{name:'塩',amount:'小さじ½'},
-      {name:'ほうれん草',amount:'1束'},{name:'めんつゆ',amount:'大さじ1'},{name:'ごま',amount:'適量'},
-      {name:'豆腐',amount:'½丁'},{name:'わかめ',amount:'適量'},{name:'味噌',amount:'大さじ1.5'},
-      {name:'ご飯',amount:'茶碗4杯'},
-    ],
-    steps:[
-      '【生姜焼き】玉ねぎを薄切り、しょうがをすりおろしてタレを作る。豚肉を炒め、玉ねぎを加えてタレで絡める。',
-      '【浅漬け】キャベツをざく切りにして塩もみし、10分置いて水気を絞る。',
-      '【お浸し】ほうれん草を塩茹でして絞り、めんつゆとごまで和える。',
-      '【味噌汁】だし汁を沸かし、豆腐を加えて味噌を溶き入れ、わかめを加える。',
-      'ご飯と一緒に盛りつけて完成。',
-    ],
-    memo:'生姜焼きのタレは先に混ぜておくとスムーズ。副菜は前日に作り置きもOK！'
-  },
-  '鶏の唐揚げ・ポテトサラダ・きゅうりの酢の物・すまし汁・ご飯': {
-    ingredients:[
-      {name:'鶏もも肉',amount:'300g'},{name:'醤油',amount:'大さじ2'},{name:'酒',amount:'大さじ1'},
-      {name:'にんにく',amount:'1かけ'},{name:'しょうが',amount:'1かけ'},{name:'片栗粉',amount:'大さじ4'},
-      {name:'じゃがいも',amount:'2個'},{name:'マヨネーズ',amount:'大さじ3'},{name:'きゅうり',amount:'1本'},
-      {name:'酢',amount:'大さじ2'},{name:'砂糖',amount:'大さじ1'},{name:'塩',amount:'少々'},
-      {name:'だし汁',amount:'400ml'},{name:'塩',amount:'小さじ½'},{name:'醤油',amount:'小さじ1'},
-      {name:'ご飯',amount:'茶碗4杯'},
-    ],
-    steps:[
-      '【唐揚げ】鶏肉を一口大に切り、醤油・酒・にんにく・しょうがに30分漬ける。片栗粉をまぶして170℃で4分揚げる。',
-      '【ポテトサラダ】じゃがいもを茹でてつぶし、マヨネーズで和える。',
-      '【酢の物】きゅうりを薄切りにして塩もみし、酢・砂糖で和える。',
-      '【すまし汁】だし汁を沸かし、塩・醤油で味を調える。',
-      'ご飯と一緒に盛りつけて完成。',
-    ],
-    memo:'唐揚げは二度揚げするとカリッと仕上がります！'
-  },
-  'サバの味噌煮・ひじきの煮物・大根のなます・味噌汁・ご飯': {
-    ingredients:[
-      {name:'サバ',amount:'2切れ'},{name:'味噌',amount:'大さじ2'},{name:'みりん',amount:'大さじ2'},
-      {name:'砂糖',amount:'大さじ1'},{name:'しょうが',amount:'1かけ'},
-      {name:'ひじき（乾燥）',amount:'大さじ2'},{name:'にんじん',amount:'¼本'},{name:'油揚げ',amount:'½枚'},
-      {name:'醤油',amount:'大さじ1'},{name:'大根',amount:'¼本'},{name:'にんじん',amount:'¼本'},
-      {name:'酢',amount:'大さじ2'},{name:'砂糖',amount:'大さじ1'},
-      {name:'豆腐',amount:'½丁'},{name:'ご飯',amount:'茶碗4杯'},
-    ],
-    steps:[
-      '【サバの味噌煮】サバに熱湯をかけ、鍋で調味料と一緒に10分煮る。',
-      '【ひじきの煮物】ひじきを戻し、にんじん・油揚げと一緒に醤油・みりんで炒め煮する。',
-      '【なます】大根・にんじんを千切りにして塩もみし、酢・砂糖で和える。',
-      '【味噌汁】豆腐を加えた味噌汁を作る。',
-      'ご飯と一緒に盛りつけて完成。',
-    ],
-    memo:'なますとひじきは前日に作っておくと味が馴染んでおいしくなります！'
-  },
-  '豚のしょうが焼き・ほうれん草のごま和え・きのこのソテー・豚汁・ご飯': {
-    ingredients:[
-      {name:'豚ロース',amount:'200g'},{name:'しょうが',amount:'1かけ'},{name:'醤油',amount:'大さじ2'},
-      {name:'みりん',amount:'大さじ2'},{name:'ほうれん草',amount:'1束'},{name:'ごま',amount:'大さじ1'},
-      {name:'めんつゆ',amount:'大さじ1'},{name:'しめじ',amount:'1袋'},{name:'えのき',amount:'½袋'},
-      {name:'バター',amount:'10g'},{name:'醤油',amount:'小さじ1'},
-      {name:'豚バラ',amount:'80g'},{name:'大根',amount:'¼本'},{name:'にんじん',amount:'½本'},
-      {name:'味噌',amount:'大さじ2'},{name:'ご飯',amount:'茶碗4杯'},
-    ],
-    steps:[
-      '【しょうが焼き】豚ロースにすりおろしたしょうが・醤油・みりんのタレを絡めて焼く。',
-      '【ごま和え】ほうれん草を塩茹でして絞り、めんつゆ・ごまで和える。',
-      '【きのこソテー】しめじ・えのきをバターで炒め、醤油を加える。',
-      '【豚汁】豚バラ・大根・にんじんを炒めてだし汁で煮て、味噌を溶き入れる。',
-      'ご飯と一緒に盛りつけて完成。',
-    ],
-    memo:'豚汁は多めに作ると翌日のお昼にも使えます！'
-  },
-  '餃子・もやしのナムル・きゅうりとわかめの酢の物・中華スープ・ご飯': {
-    ingredients:[
-      {name:'餃子（市販）',amount:'20個'},{name:'ごま油',amount:'大さじ1'},
-      {name:'もやし',amount:'1袋'},{name:'にんにく',amount:'少々'},{name:'ごま油',amount:'小さじ1'},
-      {name:'醤油',amount:'小さじ1'},{name:'塩',amount:'少々'},
-      {name:'きゅうり',amount:'1本'},{name:'わかめ',amount:'適量'},{name:'酢',amount:'大さじ2'},
-      {name:'砂糖',amount:'大さじ1'},{name:'卵',amount:'1個'},{name:'中華スープの素',amount:'小さじ2'},
-      {name:'ご飯',amount:'茶碗4杯'},
-    ],
-    steps:[
-      '【餃子】フライパンにごま油を熱し、餃子を並べて水を加え蓋をして蒸し焼きにする。',
-      '【ナムル】もやしを塩茹でして、ごま油・にんにく・塩・醤油で和える。',
-      '【酢の物】きゅうりを薄切り・わかめを戻して、酢・砂糖で和える。',
-      '【中華スープ】湯を沸かしてスープの素を溶かし、溶き卵を加えてかき玉にする。',
-      'ご飯と一緒に盛りつけて完成。',
-    ],
-    memo:'餃子は触らずじっくり焼くときれいな焼き色がつきます！'
-  },
-  '鮭の塩焼き・ひじきの煮物・ほうれん草のお浸し・豚汁・ご飯': {
-    ingredients:[
-      {name:'鮭',amount:'4切れ'},{name:'塩',amount:'適量'},
-      {name:'ひじき（乾燥）',amount:'大さじ2'},{name:'にんじん',amount:'¼本'},{name:'油揚げ',amount:'½枚'},
-      {name:'醤油',amount:'大さじ1'},{name:'みりん',amount:'大さじ1'},
-      {name:'ほうれん草',amount:'1束'},{name:'めんつゆ',amount:'大さじ1'},
-      {name:'豚バラ',amount:'80g'},{name:'大根',amount:'¼本'},{name:'味噌',amount:'大さじ2'},
-      {name:'ご飯',amount:'茶碗4杯'},
-    ],
-    steps:[
-      '【鮭】塩を振って10分置き、魚焼きグリルで7〜8分焼く。',
-      '【ひじき】ひじきを戻し、にんじん・油揚げと醤油・みりんで炒め煮する。',
-      '【お浸し】ほうれん草を塩茹でして絞り、めんつゆで和える。',
-      '【豚汁】豚バラ・大根を炒めてだし汁で煮て、味噌を溶き入れる。',
-      'ご飯と一緒に盛りつけて完成。',
-    ],
-    memo:'鮭は塩を振って少し置くと余分な水分が出て、ふっくら焼けます！'
-  },
-  '冷やし中華': {
-    ingredients:[{name:'中華麺',amount:'2玉'},{name:'ハム',amount:'4枚'},{name:'きゅうり',amount:'1本'},{name:'卵',amount:'2個'},{name:'冷やし中華のたれ',amount:'適量'},{name:'ごま',amount:'適量'}],
-    steps:['麺を茹でて冷水で締める。','卵は薄焼き卵を作って千切りにする。','きゅうりとハムを千切りにする。','麺を器に盛り、具材をのせてたれをかける。'],
-    memo:'麺はしっかり冷やすとのどごしよく食べられます！'
-  },
-};
-
-function buildMenuWithFav(defaultMenu) {
-  // お気に入りのメインを週間提案に組み込む
-  const favMains = S.fav.filter(f => f.category === 'main' && f.count >= 1);
-  const favSides = S.fav.filter(f => f.category === 'side');
-  const favSoups = S.fav.filter(f => f.category === 'soup');
-  const favComplete = S.fav.filter(f => f.category === 'complete');
-
-  if (favMains.length === 0 && favComplete.length === 0) return defaultMenu;
-
-  // お気に入りを最大3日分使う
-  const result = [...defaultMenu];
-  const usedDays = [];
-  const maxFavDays = Math.min(3, favMains.length + favComplete.length);
-
-  // ランダムに何日かお気に入りで置き換え
-  for (let i = 0; i < maxFavDays; i++) {
-    let day;
-    do { day = Math.floor(Math.random() * 7); } while (usedDays.includes(day));
-    usedDays.push(day);
-
-    if (favComplete.length > 0 && Math.random() > 0.6) {
-      // 完結系（カレーなど）
-      const fav = favComplete[Math.floor(Math.random() * favComplete.length)];
-      result[day] = { ...result[day], 夜: fav.name };
-    } else if (favMains.length > 0) {
-      // メイン＋副菜＋汁物を組み合わせ
-      const main = favMains[Math.floor(Math.random() * favMains.length)];
-      const side1 = favSides.length > 0 ? favSides[Math.floor(Math.random() * favSides.length)].name : 'きゅうりの酢の物';
-      const side2 = favSides.length > 1 ? favSides.filter(s => s.name !== side1)[Math.floor(Math.random() * (favSides.length-1))].name : 'ほうれん草のお浸し';
-      const soup = favSoups.length > 0 ? favSoups[Math.floor(Math.random() * favSoups.length)].name : '味噌汁';
-      result[day] = { ...result[day], 夜: `${main.name}・${side1}・${side2}・${soup}・ご飯` };
-    }
-  }
-  return result;
-}
-
-function demoWeekSuggest() {
-  closeModal();
-  const weekMenus = [
-    { 朝:'トースト・目玉焼き・サラダ', 昼:'うどん', 夜:'豚の生姜焼き・キャベツの浅漬け・ほうれん草のお浸し・味噌汁・ご飯' },
-    { 朝:'ご飯・納豆・味噌汁', 昼:'チャーハン', 夜:'鶏の唐揚げ・ポテトサラダ・きゅうりの酢の物・すまし汁・ご飯' },
-    { 朝:'パン・ヨーグルト', 昼:'そうめん', 夜:'サバの味噌煮・ひじきの煮物・大根のなます・味噌汁・ご飯' },
-    { 朝:'おにぎり・味噌汁', 昼:'焼きそば', 夜:'豚のしょうが焼き・きのこのソテー・トマトサラダ・豚汁・ご飯' },
-    { 朝:'ご飯・卵焼き・味噌汁', 昼:'冷やし中華', 夜:'カレーライス' },
-    { 朝:'フレンチトースト', 昼:'親子丼', 夜:'餃子・もやしのナムル・きゅうりとわかめの酢の物・中華スープ・ご飯' },
-    { 朝:'ご飯・納豆・みそ汁', 昼:'ラーメン', 夜:'鮭の塩焼き・ほうれん草のごま和え・大根の味噌汁・ご飯' },
-  ];
-  const finalMenus = buildMenuWithFav(weekMenus);
-  for (let i = 0; i < 7; i++) {
-    S.week[i] = finalMenus[i];
-  }
-  // 今日の分をS.mealsにもレシピ込みで反映
-  const todayMenu = finalMenus[todayDow];
+function doSuggestAll() {
   ['朝','昼','夜'].forEach(t => {
-    if (todayMenu[t]) {
-      S.meals[t].name = todayMenu[t];
-      S.meals[t].recipe = RECIPES[todayMenu[t]] || null;
-    }
-  });
-  saveData();
-  showToast('✨ 1週間分の献立を提案しました！');
-  render();
-  setTimeout(() => openModal('weekShoppingConfirm'), 400);
-}
-
-function addWeekShoppingList() {
-  const weekItems = {
-    '万代': ['豚バラ 400g', '鶏もも肉 600g', '卵 10個', 'キャベツ 1玉', 'ほうれん草 1束', '玉ねぎ 3個', '豆腐 2丁', '納豆 3パック'],
-    '業務スーパー': ['冷凍うどん 5食', '冷凍えだまめ', 'ちくわ 1袋'],
-  };
-  Object.entries(weekItems).forEach(([store, items]) => {
-    if (!S.shopping[store]) S.shopping[store] = [];
-    items.forEach(name => {
-      if (!S.shopping[store].find(i => i.name === name)) {
-        S.shopping[store].push({ name, done: false });
-      }
+    const result = suggestMeal(t, S.tomorrow[t].persons);
+    S.tomorrow[t].name = result.name;
+    S.tomorrow[t].recipe = result.recipe;
+    if (result.shopping) result.shopping.forEach(item => {
+      if (!S.shopping.find(s => s.name === item)) S.shopping.push({name:item, done:false});
     });
   });
   saveData();
-  showToast('🛒 買い物リストに追加しました！');
-  closeModal();
-  switchPage('shopping');
-}
-
-function saveBudget() {
-  const input = document.getElementById('budget-input');
-  if (!input || !input.value) return;
-  const val = parseInt(input.value);
-  if (isNaN(val) || val < 0) { showToast('正しい金額を入力してね'); return; }
-  S.budget.goal = val;
-  saveData();
-  showToast('✅ 予算を更新しました');
+  showToast('✨ 明日の献立を提案しました！');
   closeModal();
   render();
+  // 記録にも追加
+  recordToWeek();
 }
 
-function saveFamily(idx) {
-  const input = document.getElementById('ng-input');
-  if (!input) return;
-  const ngList = input.value.split(/[,、，]/).map(s => s.trim()).filter(s => s.length > 0);
-  S.family[idx].ng = ngList;
+function doSuggestSingle(time) {
+  const result = suggestMeal(time, S.tomorrow[time].persons);
+  S.tomorrow[time].name = result.name;
+  S.tomorrow[time].recipe = result.recipe;
   saveData();
-  showToast('✅ 苦手食材を更新しました');
-  openModal('settings');
+  showToast('✨ 献立を提案しました！');
+  closeModal();
+  render();
+  recordToWeek();
 }
 
-function updateTodayMeal(time) {
-  const input = document.getElementById('today-meal-input');
+function recordToWeek() {
+  const tomorrowDow = tomorrow.getDay();
+  if (!S.week[tomorrowDow]) S.week[tomorrowDow] = {};
+  ['朝','昼','夜'].forEach(t => {
+    if (S.tomorrow[t].name) {
+      S.week[tomorrowDow][t] = { name: S.tomorrow[t].name, persons: S.tomorrow[t].persons, liked: S.tomorrow[t].liked };
+    }
+  });
+  saveData();
+}
+
+function saveMealEdit(time) {
+  const input = document.getElementById('meal-input');
   if (!input || !input.value.trim()) { showToast('メニュー名を入力してね'); return; }
-  S.meals[time].name = input.value.trim();
-  S.meals[time].recipe = RECIPES[input.value.trim()] || null;
-  syncWeekFromToday();
-  saveData();
-  showToast('✅ 更新しました');
-  closeModal();
-  render();
+  S.tomorrow[time].name = input.value.trim();
+  saveData(); showToast('✅ 更新しました'); closeModal(); render();
+  recordToWeek();
 }
 
-function addFavManual() {
+function clearMeal(time) {
+  S.tomorrow[time].name = null;
+  S.tomorrow[time].recipe = null;
+  saveData(); showToast('🗑️ 削除しました'); closeModal(); render();
+}
+
+function toggleLike(time) {
+  const m = S.tomorrow[time];
+  m.liked = !m.liked;
+  if (m.liked && m.name) {
+    const ex = S.fav.find(f => f.name === m.name);
+    if (ex) ex.count++;
+    else S.fav.unshift({name:m.name, count:1, category:'main'});
+    S.fav.sort((a,b) => b.count - a.count);
+    showToast('❤️ お気に入りに追加しました');
+  }
+  saveData(); render();
+  recordToWeek();
+}
+
+function toggleShop(idx) {
+  S.shopping[idx].done = !S.shopping[idx].done;
+  saveData(); render();
+}
+
+function removeShop(idx) {
+  S.shopping.splice(idx, 1);
+  saveData(); render();
+}
+
+function addStock() {
+  const name = document.getElementById('stock-name').value.trim();
+  const amt = document.getElementById('stock-amt').value.trim();
+  const expEl = document.getElementById('stock-exp');
+  const catBtn = document.querySelector('#stock-cat-row .store-btn.active');
+  if (!name) { showToast('品名を入力してね'); return; }
+  const cat = catBtn ? catBtn.textContent : '食材';
+  let expiry = null, warn = false;
+  if (expEl && expEl.value) {
+    const parts = expEl.value.split('-');
+    expiry = parseInt(parts[1]) + '/' + parseInt(parts[2]);
+    const expDate = new Date(expEl.value);
+    const diff = (expDate - today) / (1000*60*60*24);
+    warn = diff <= 3;
+  }
+  S.stock[cat].push({name, amount:amt||'あり', expiry, warn});
+  saveData(); showToast('✅ 追加しました'); closeModal(); render();
+}
+
+function saveStock(cat, idx) {
+  const nameEl = document.getElementById('edit-stock-name');
+  const amtEl = document.getElementById('edit-stock-amt');
+  if (nameEl) S.stock[cat][idx].name = nameEl.value.trim();
+  if (amtEl) S.stock[cat][idx].amount = amtEl.value.trim();
+  saveData(); showToast('✅ 更新しました'); closeModal(); render();
+}
+
+function deleteStock(cat, idx) {
+  S.stock[cat].splice(idx, 1);
+  saveData(); showToast('🗑️ 削除しました'); closeModal(); render();
+}
+
+function addFav() {
   const val = document.getElementById('fav-input').value.trim();
   const catBtn = document.querySelector('#fav-cat-row .store-btn.active');
   if (!val) { showToast('メニュー名を入力してね'); return; }
   const catLabel = catBtn ? catBtn.textContent : '🍖 メイン';
   const cat = catLabel.includes('メイン') ? 'main' : catLabel.includes('副菜') ? 'side' : catLabel.includes('汁物') ? 'soup' : 'complete';
   const ex = S.fav.find(f => f.name === val);
-  if (ex) { ex.count++; ex.category = cat; }
-  else { S.fav.push({name: val, count: 1, category: cat}); }
+  if (ex) ex.count++;
+  else S.fav.push({name:val, count:1, category:cat});
   S.fav.sort((a,b) => b.count - a.count);
-  showToast('❤️ お気に入りに追加しました');
-  saveData(); closeModal(); render();
+  saveData(); showToast('❤️ 追加しました'); closeModal(); render();
 }
 
-function addStockAndClose() {
-  const nameEl = document.getElementById('stock-name-input');
-  const amtEl = document.getElementById('stock-amt-input');
-  const dateEl = document.getElementById('stock-date-input');
-  const catBtn = document.querySelector('#cat-row .store-btn.active');
-  if (!nameEl || !nameEl.value.trim()) { showToast('品名を入力してね'); return; }
-  const cat = catBtn ? catBtn.textContent : '食材';
-  let expiry = null;
-  if (dateEl && dateEl.value) {
-    const parts = dateEl.value.split('-');
-    expiry = parseInt(parts[1]) + '/' + parseInt(parts[2]);
-  }
-  S.stock[cat].push({ name: nameEl.value.trim(), amount: amtEl.value.trim() || 'あり', expiry, warn: false });
-  saveData(); showToast('✅ 在庫を追加しました'); closeModal(); render();
+function deleteFav(idx) {
+  S.fav.splice(idx, 1);
+  saveData(); showToast('🗑️ 削除しました'); render();
 }
 
-function addShopAndClose() {
-  const nameEl = document.getElementById('shop-name-input');
-  const storeBtn = document.querySelector('#shop-row .store-btn.active');
-  if (!nameEl || !nameEl.value.trim()) { showToast('品名を入力してね'); return; }
-  const store = storeBtn ? storeBtn.textContent : '万代';
-  if (!S.shopping[store]) S.shopping[store] = [];
-  S.shopping[store].push({ name: nameEl.value.trim(), done: false });
-  saveData(); showToast('✅ 追加しました'); closeModal(); render();
+function saveFamily(idx) {
+  const input = document.getElementById('ng-input');
+  if (!input) return;
+  S.family[idx].ng = input.value.split(/[,、，]/).map(s => s.trim()).filter(s => s.length > 0);
+  saveData(); showToast('✅ 更新しました'); openModal('settings');
 }
 
 function selectBtn(rowId, el) {
@@ -1123,24 +820,34 @@ function closeModal() {
   document.getElementById('modal-backdrop').classList.remove('open');
 }
 
-const STORAGE_KEY = 'kondate_v1';
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── データ保存 ──
+const STORAGE_KEY = 'kondate_v2';
 function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({budget:S.budget,meals:S.meals,week:S.week,stock:S.stock,shopping:S.shopping,fav:S.fav,family:S.family})); } catch(e) {}
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      tomorrow:S.tomorrow, stock:S.stock, shopping:S.shopping,
+      fav:S.fav, family:S.family, week:S.week,
+    }));
+  } catch(e) {}
 }
 function loadData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const d = JSON.parse(raw);
-    if (d.budget) S.budget = d.budget;
-    if (d.meals) S.meals = d.meals;
-    if (d.week) S.week = d.week;
+    if (d.tomorrow) S.tomorrow = d.tomorrow;
     if (d.stock) S.stock = d.stock;
     if (d.shopping) S.shopping = d.shopping;
     if (d.fav) S.fav = d.fav;
     if (d.family) S.family = d.family;
-    if (d.chirashiText) S.chirashiText = d.chirashiText;
-    if (d.weekPersons) S.weekPersons = d.weekPersons;
+    if (d.week) S.week = d.week;
   } catch(e) {}
 }
 
